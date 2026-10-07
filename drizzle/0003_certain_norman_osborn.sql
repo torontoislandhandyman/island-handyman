@@ -1,0 +1,1 @@
+ALTER TABLE `job_requests` ADD `accountEmail` varchar(320);

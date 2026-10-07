@@ -1,0 +1,62 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1790206242138,
+      "tag": "0000_square_wong",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1790206450762,
+      "tag": "0001_robust_doctor_doom",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1790209243063,
+      "tag": "0002_cold_lethal_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1790209351151,
+      "tag": "0003_certain_norman_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1790209516724,
+      "tag": "0004_colorful_rawhide_kid",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1790274958832,
+      "tag": "0005_worried_beyonder",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1790884180757,
+      "tag": "0006_fresh_hemingway",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1790976964964,
+      "tag": "0007_big_amazoness",
+      "breakpoints": true
+    }
+  ]
+}
