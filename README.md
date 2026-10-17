@@ -4,9 +4,9 @@ This archive contains the existing Island Handyman React/Vite frontend, Express/
 
 ## Important portability note
 
-This is a **source export of the working project**, not a claim that the current application is already independent of Manus. The current codebase still uses the following existing adapters:
+This is a **source export of the working project**, not a claim that the current application is already independent of Manus. Website sign-in is native; the current codebase still uses these existing platform adapters:
 
-- Manus OAuth for authentication (`server/_core/sdk.ts`, `server/_core/oauth.ts`)
+- Native on-domain email/password authentication (`server/_core/password-auth.ts`, `server/auth-store.ts`), with long-lived HTTP-only server sessions and single-use password setup/reset links
 - Manus storage proxy for private project files (`server/_core/storageProxy.ts`, `server/storage.ts`)
 - Manus Forge endpoints for map/data/AI/voice features where those features are used
 - `vite-plugin-manus-runtime` for the managed development experience
@@ -18,7 +18,8 @@ The export contains no passwords, API keys, database credentials, or session sec
 - Node.js 20+ recommended
 - npm 10+ or pnpm 10+
 - MySQL-compatible database (MySQL/TiDB)
-- A replacement or configured provider for OAuth, private file storage, and optional email/AI/map features
+- MySQL-compatible database, owner email, and verified transactional email sender for password setup/reset
+- Configured private file storage and optional email/AI/map services
 
 ## Quick start
 
@@ -30,7 +31,7 @@ The export contains no passwords, API keys, database credentials, or session sec
 
    The platform blocked direct creation of a `.env.example` filename during export preparation, so `ENV_EXAMPLE` is the included equivalent. You can rename it to `.env.example` if you prefer.
 
-2. Fill in the values in `.env`. The current authentication and storage adapters require the Manus-compatible values documented there. For a truly independent deployment, replace those adapters first.
+2. Fill in the values in `.env`. Set `OWNER_EMAIL`, `RESEND_API_KEY`, and a sender address in `EMAIL_FROM` that has been verified with Resend. Approved clients and the owner establish their password through the email link; no external sign-in provider is used.
 
 3. Install dependencies:
 
@@ -68,6 +69,9 @@ The export contains no passwords, API keys, database credentials, or session sec
 
 - `/` — public website
 - `/request` — public job request form
+- `/login` — on-domain email/password sign-in
+- `/forgot-password` — request a password setup/reset email
+- `/reset-password` — complete a one-time password setup/reset link
 - `/customer` — approved customer/VIP workspace
 - `/vip` — alias for the customer workspace
 - `/admin` — owner dashboard
@@ -76,7 +80,7 @@ The export contains no passwords, API keys, database credentials, or session sec
 
 - Business data is stored in the MySQL/TiDB database through Drizzle.
 - Private project files are stored through the current storage adapter and are authorized server-side before opening.
-- Never expose database credentials, storage credentials, OAuth secrets, or JWT secrets to the browser.
+- Never expose database credentials, storage credentials, password hashes, reset tokens, or session IDs to the browser.
 
 ## Development
 
@@ -85,6 +89,8 @@ npm run dev
 ```
 
 For a self-hosted deployment, use the generic Vite/Express process behind HTTPS and replace the platform-specific adapters listed in `PORTABILITY_AUDIT.md`.
+
+The default `pnpm test` skips a notification integration test that writes and deletes a temporary database row. Run it with `RUN_DATABASE_INTEGRATION_TESTS=true` only when `DATABASE_URL` points to a disposable test database; never use the shared production database.
 
 ## Current verification
 

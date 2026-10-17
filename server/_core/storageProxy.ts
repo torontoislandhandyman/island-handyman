@@ -1,48 +1,48 @@
 import type { Express } from "express";
-import { ENV } from "./env";
+import { getAuthorizedProjectFile } from "../db";
+import { storageGetSignedUrl } from "../storage";
+import { getSessionUser } from "./password-auth";
 
 export function registerStorageProxy(app: Express) {
-  app.get("/manus-storage/*", async (req, res) => {
-    const key = (req.params as Record<string, string>)[0];
-    if (!key) {
-      res.status(400).send("Missing storage key");
+  app.get("/api/private-files/:fileId", async (req, res) => {
+    res.set({
+      "Cache-Control": "private, no-store, max-age=0",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer",
+    });
+
+    const fileId = Number(req.params.fileId);
+    if (!Number.isSafeInteger(fileId) || fileId < 1) {
+      res.status(404).send("File not found.");
       return;
     }
 
-    if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
-      res.status(500).send("Storage proxy not configured");
+    let user;
+    try {
+      user = await getSessionUser(req);
+    } catch (error) {
+      console.error("[PrivateFiles] session lookup failed:", error);
+      res.status(503).send("Private files are temporarily unavailable.");
+      return;
+    }
+
+    if (!user) {
+      res.status(401).send("Please sign in to view this file.");
       return;
     }
 
     try {
-      const forgeUrl = new URL(
-        "v1/storage/presign/get",
-        ENV.forgeApiUrl.replace(/\/+$/, "") + "/",
-      );
-      forgeUrl.searchParams.set("path", key);
-
-      const forgeResp = await fetch(forgeUrl, {
-        headers: { Authorization: `Bearer ${ENV.forgeApiKey}` },
-      });
-
-      if (!forgeResp.ok) {
-        const body = await forgeResp.text().catch(() => "");
-        console.error(`[StorageProxy] forge error: ${forgeResp.status} ${body}`);
-        res.status(502).send("Storage backend error");
+      const file = await getAuthorizedProjectFile(fileId, { email: user.email }, user.role === "admin");
+      if (!file) {
+        res.status(404).send("File not found.");
         return;
       }
 
-      const { url } = (await forgeResp.json()) as { url: string };
-      if (!url) {
-        res.status(502).send("Empty signed URL from backend");
-        return;
-      }
-
-      res.set("Cache-Control", "no-store");
-      res.redirect(307, url);
+      const signedUrl = await storageGetSignedUrl(file.storageKey);
+      res.redirect(302, signedUrl);
     } catch (err) {
-      console.error("[StorageProxy] failed:", err);
-      res.status(502).send("Storage proxy error");
+      console.error("[PrivateFiles] download failed:", err);
+      res.status(502).send("The file could not be opened right now.");
     }
   });
 }

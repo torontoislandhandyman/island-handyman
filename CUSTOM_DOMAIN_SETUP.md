@@ -1,0 +1,34 @@
+# Island Handyman: domain and email setup
+
+## What connects to what
+
+- **Porkbun** is where the domain is registered and where DNS is edited *if Porkbun is also the domain's active DNS provider*.
+- **Manus** hosts the website. The owner has now asked to deploy the current project version on its Manus-hosted address. Preview and the published site are separate; check the Dashboard's deployment result before treating the release as live. No DNS changes are included in that request.
+- **Resend** is the website's outgoing email sender. It is not an inbox or a domain registrar.
+- Your chosen Gmail address is the website owner's login/notification destination. It does not need to change.
+
+**Current status:** Public DNS confirms `islandhandyman.vip` is delegated to Porkbun (`salvador.ns.porkbun.com`, `maceio.ns.porkbun.com`, `curitiba.ns.porkbun.com`, `fortaleza.ns.porkbun.com`). The root has no A/AAAA/CNAME website record, and `www.islandhandyman.vip` returns NXDOMAIN, so neither hostname currently points to the website. These are the current **nameservers**, not the website's A/CNAME destination. The project has a configured Resend key with send-only permissions; the read-only domain-list request returned `restricted_api_key`, which is expected for that scope and does **not** prove sending works. A safe, no-customer-data test to Resend's test recipient was rejected with HTTP 422, so successful delivery is not confirmed. Check the sender domain in Resend. No website DNS record values are available from the current project configuration, and none have been guessed.
+
+## Connect `islandhandyman.vip`
+
+1. **Check that your Manus account can use a custom domain.** The current [Manus Help Center article](https://help.manus.im/en/articles/11711203-how-can-i-connect-the-website-created-by-manus-to-my-custom-domain) says direct custom-domain connections are currently supported for paid users; it says free users can request a code package for self-deployment. You are on the Free plan, so first check whether **Custom domain** appears for this project. If it does not, do not change DNS; use the Manus-hosted address or follow the Help Center's code-package route to a host that supports custom domains. Account-specific plan questions belong with [Manus Help](https://help.manus.im).
+2. **Keep the Manus-hosted release separate from the custom domain.** The owner has authorized deployment of the current app version to its existing Manus-hosted address. Custom-domain connection is a separate step: in the project Dashboard, open its domain/custom-domain settings and add `islandhandyman.vip` (and `www.islandhandyman.vip` only if you want both) if the feature is available for the account.
+3. **Copy the exact records Manus displays.** Record each **Type**, **Host/Name**, **Value/Target**, and any **Priority/TTL**. The exact A/CNAME values are deployment-specific. Do not use the Preview URL, an example IP address, or a guessed CNAME.
+4. **Add those records in Porkbun, if Porkbun is the active DNS host.** Sign in → **Domain Management** → select **DNS** for `islandhandyman.vip` → **Add Record** → enter the values copied from Manus → **Add/Save**. Porkbun's [official DNS editing guide](https://kb.porkbun.com/article/68-how-to-edit-dns-records) explains the fields. Leave the TTL at its default unless Manus says otherwise. Do not change nameservers or remove existing Gmail MX/TXT records. Remove only a record that conflicts with the exact hostname Manus asks you to connect. If your nameservers point to another DNS provider, make the change there instead.
+5. **Wait and verify.** Return to Manus and press **Verify**. After Manus verifies the domain and provisions HTTPS, check `https://islandhandyman.vip/` and `https://www.islandhandyman.vip/` if both were configured. DNS changes can take time to appear.
+
+The general product steps are documented in [Manus Custom Domains](https://manus.im/docs/website-builder/custom-domains). Manus Help currently describes a paid-plan requirement, so check the project Dashboard before planning a DNS change.
+
+## How website email works
+
+- **Password setup/recovery:** a person enters an email on the website's own **Forgot Password?** page. The server sends a one-use setup/reset link via Resend. It expires after **one hour**. The link returns to the website; the person sets a password, which the server hashes, then receives an HTTP-only website session. The owner address is allowed to establish the first admin account; an approved customer address can establish that customer's account. The app gives the same confirmation message whether or not an address is eligible.
+- **Owner email:** new job requests trigger a Resend email to the configured owner address and a separate Manus owner alert. Owner replies, project-status changes, and owner-added project files send Resend emails to the customer's account/contact email.
+- **Messages from customers:** customer messages and customer-uploaded files create an in-app notification and call Manus's owner-notification service; the current code does not send those two events through Resend as email.
+- **Sending versus receiving:** Resend sends application mail; it does not create an inbox. The configured `EMAIL_FROM` address must belong to a domain verified in Resend. Keep Gmail's existing MX records if you still receive mail there. To receive mail at an address such as `hello@islandhandyman.vip`, separately set up an inbox provider; do not point MX records at Resend unless that provider explicitly gives you those records.
+
+## Verify email after the domain is live
+
+1. Sign in to [Resend](https://resend.com/) and open **Domains**. Confirm the domain matching the configured `EMAIL_FROM` is **Verified**. If not, add it and copy Resend's own verification records into the active DNS provider. Do not combine or overwrite SPF records by guessing; follow Resend's values exactly. See [Resend's domain guide](https://resend.com/docs/add-a-domain).
+2. The reset-link code defaults to `https://islandhandyman.vip`; `PUBLIC_APP_URL` is not injected as a separate runtime value. The link will not be usable until that address resolves to the site. If you choose a different canonical hostname, set `PUBLIC_APP_URL` to that exact HTTPS origin.
+3. Once the website URL and sender domain are verified, open `/forgot-password`, request a setup link for the owner account, check Inbox/Spam, follow the link within one hour, choose a password, and sign in. Then submit one harmless test job request to confirm the owner email notification. The safe provider test was rejected with HTTP 422; no successful message was confirmed.
+4. If no message arrives, check the Resend **Logs/Emails** page for the send result and verify that `EMAIL_FROM` matches the verified domain. Never paste `RESEND_API_KEY` into chat; replace it only through the secure project-secret input.

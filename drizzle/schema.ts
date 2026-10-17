@@ -1,18 +1,43 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { index, int, json, mysqlEnum, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
+import type { SiteContent } from "../shared/siteContent";
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
+  passwordHash: varchar("passwordHash", { length: 255 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
-});
+}, (table) => ({ emailUnique: uniqueIndex("users_email_unique").on(table.email) }));
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
+
+export const authSessions = mysqlTable("auth_sessions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  tokenHash: varchar("tokenHash", { length: 64 }).notNull().unique(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIndex: index("auth_sessions_user_id_idx").on(table.userId),
+  expiryIndex: index("auth_sessions_expires_at_idx").on(table.expiresAt),
+}));
+
+export const authSetupTokens = mysqlTable("auth_setup_tokens", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull(),
+  tokenHash: varchar("tokenHash", { length: 64 }).notNull().unique(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  consumedAt: timestamp("consumedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  emailIndex: index("auth_setup_tokens_email_idx").on(table.email),
+  expiryIndex: index("auth_setup_tokens_expires_at_idx").on(table.expiresAt),
+}));
 
 export const businessSettings = mysqlTable("business_settings", {
   id: int("id").primaryKey(),
@@ -23,6 +48,7 @@ export const businessSettings = mysqlTable("business_settings", {
   jobAvailability: mysqlEnum("jobAvailability", ["accepting", "limited", "fully_booked", "not_working"]).default("accepting").notNull(),
   onlineLabel: varchar("onlineLabel", { length: 120 }).default("Checking messages").notNull(),
   nextAvailableLabel: varchar("nextAvailableLabel", { length: 120 }).default("3:00 PM").notNull(),
+  siteContent: json("siteContent").$type<SiteContent>(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 export type BusinessSettings = typeof businessSettings.$inferSelect;

@@ -152,8 +152,18 @@ function vitePluginManusDebugCollector(): Plugin {
 
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
+const managedBrowserConfig = {
+  "import.meta.env.VITE_ANALYTICS_ENDPOINT": JSON.stringify(
+    process.env.VITE_ANALYTICS_ENDPOINT ?? process.env.MANUS_ANALYTICS_ENDPOINT ?? ""
+  ),
+  "import.meta.env.VITE_ANALYTICS_WEBSITE_ID": JSON.stringify(
+    process.env.VITE_ANALYTICS_WEBSITE_ID ?? process.env.MANUS_ANALYTICS_WEBSITE_ID ?? ""
+  ),
+};
+
 export default defineConfig({
   plugins,
+  define: managedBrowserConfig,
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

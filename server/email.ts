@@ -1,4 +1,4 @@
-export type EmailPayload = { to: string; subject: string; text: string };
+export type EmailPayload = { to: string; subject: string; text: string; html?: string };
 
 /**
  * Optional transactional email adapter. Configure RESEND_API_KEY, EMAIL_FROM,
@@ -16,7 +16,7 @@ export async function sendEmail(payload: EmailPayload): Promise<boolean> {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to: [payload.to], subject: payload.subject, text: payload.text }),
+      body: JSON.stringify({ from, to: [payload.to], subject: payload.subject, text: payload.text, ...(payload.html ? { html: payload.html } : {}) }),
     });
     if (!response.ok) {
       console.warn(`[Email] Delivery failed (${response.status}).`);

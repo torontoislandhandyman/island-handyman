@@ -1,7 +1,10 @@
 import { and, asc, desc, eq, inArray, isNull, or } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import { DEFAULT_SITE_CONTENT, normalizeSiteContent, type SiteContent } from "../shared/siteContent";
 import {
   availabilitySlots,
+  authSessions,
+  authSetupTokens,
   businessSettings,
   InsertJobRequest,
   InsertMessage,
@@ -19,14 +22,11 @@ import {
   ProjectFile,
   projectEvents,
   ProjectEvent,
-  InsertUser,
-  users,
   InsertNotification,
   Notification,
   notifications,
+  users,
 } from "../drizzle/schema";
-import { ENV } from "./_core/env";
-
 let _db: ReturnType<typeof drizzle> | null = null;
 
 export async function getDb() {
@@ -41,43 +41,6 @@ export async function getDb() {
   return _db;
 }
 
-export async function upsertUser(user: InsertUser): Promise<void> {
-  if (!user.openId) throw new Error("User openId is required for upsert");
-  const db = await getDb();
-  if (!db) return;
-
-  const values: InsertUser = { openId: user.openId };
-  const updateSet: Record<string, unknown> = {};
-  const textFields = ["name", "email", "loginMethod"] as const;
-  for (const field of textFields) {
-    if (user[field] !== undefined) {
-      values[field] = user[field] ?? null;
-      updateSet[field] = user[field] ?? null;
-    }
-  }
-  if (user.lastSignedIn !== undefined) {
-    values.lastSignedIn = user.lastSignedIn;
-    updateSet.lastSignedIn = user.lastSignedIn;
-  }
-  if (user.role !== undefined) {
-    values.role = user.role;
-    updateSet.role = user.role;
-  } else if (user.openId === ENV.ownerOpenId) {
-    values.role = "admin";
-    updateSet.role = "admin";
-  }
-  values.lastSignedIn ??= new Date();
-  if (Object.keys(updateSet).length === 0) updateSet.lastSignedIn = new Date();
-  await db.insert(users).values(values).onDuplicateKeyUpdate({ set: updateSet });
-}
-
-export async function getUserByOpenId(openId: string) {
-  const db = await getDb();
-  if (!db) return undefined;
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
-  return result[0];
-}
-
 const fallbackSettings = {
   id: 1,
   onlineStatus: "online" as const,
@@ -87,6 +50,7 @@ const fallbackSettings = {
   jobAvailability: "accepting" as const,
   onlineLabel: "Checking messages",
   nextAvailableLabel: "3:00 PM",
+  siteContent: null,
   updatedAt: new Date(),
 };
 
@@ -98,10 +62,10 @@ const fallbackOpenings = [
 
 export async function getPublicSiteData() {
   const db = await getDb();
-  if (!db) return { settings: fallbackSettings, calendar: fallbackOpenings };
+  if (!db) return { settings: fallbackSettings, calendar: fallbackOpenings, siteContent: DEFAULT_SITE_CONTENT };
   const settings = (await db.select().from(businessSettings).limit(1))[0] ?? fallbackSettings;
   const calendar = await db.select().from(availabilitySlots).where(eq(availabilitySlots.isPublic, 1)).orderBy(asc(availabilitySlots.slotDate), asc(availabilitySlots.startTime)).limit(90);
-  return { settings, calendar };
+  return { settings, calendar, siteContent: normalizeSiteContent(settings.siteContent) };
 }
 
 export async function getPrivateAvailability() {
@@ -151,6 +115,14 @@ export async function updateBusinessSettings(input: { onlineStatus: "online" | "
   return (await db.select().from(businessSettings).where(eq(businessSettings.id, 1)).limit(1))[0];
 }
 
+export async function updateSiteContent(siteContent: SiteContent) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.insert(businessSettings).values({ id: 1, siteContent }).onDuplicateKeyUpdate({ set: { siteContent } });
+  const saved = (await db.select().from(businessSettings).where(eq(businessSettings.id, 1)).limit(1))[0];
+  return normalizeSiteContent(saved?.siteContent);
+}
+
 export async function updateJobRequestStatus(id: number, status: JobRequest["status"]) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
@@ -166,7 +138,37 @@ export async function updateCustomerAccess(id: number, customerAccess: JobReques
 export async function updateCustomerAccountEmail(id: number, accountEmail: string | null) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  await db.update(jobRequests).set({ accountEmail }).where(eq(jobRequests.id, id));
+  const request = (await db.select().from(jobRequests).where(eq(jobRequests.id, id)).limit(1))[0];
+  if (!request) throw new Error("Request not found");
+  const normalizedAccountEmail = accountEmail?.trim().toLowerCase() || null;
+  const previousActiveEmail = (request.accountEmail || request.email)?.trim().toLowerCase() || null;
+  const nextActiveEmail = (normalizedAccountEmail || request.email)?.trim().toLowerCase() || null;
+  await db.transaction(async (tx) => {
+    await tx.update(jobRequests).set({ accountEmail: normalizedAccountEmail }).where(eq(jobRequests.id, id));
+    if (request.customerId) {
+      await tx.update(jobRequests).set({ accountEmail: normalizedAccountEmail }).where(eq(jobRequests.customerId, request.customerId));
+      await tx.update(customers).set({ accountEmail: normalizedAccountEmail }).where(eq(customers.id, request.customerId!));
+    }
+    if (previousActiveEmail && previousActiveEmail !== nextActiveEmail) {
+      const oldUsers = await tx.select({ id: users.id }).from(users).where(eq(users.email, previousActiveEmail)).limit(1);
+      if (oldUsers[0]) await tx.delete(authSessions).where(eq(authSessions.userId, oldUsers[0].id));
+      await tx.delete(authSetupTokens).where(eq(authSetupTokens.email, previousActiveEmail));
+    }
+  });
+}
+
+function currentCustomerEmailCondition(email: string) {
+  return or(
+    eq(customers.accountEmail, email),
+    and(or(isNull(customers.accountEmail), eq(customers.accountEmail, "")), eq(customers.email, email)),
+  );
+}
+
+function currentRequestEmailCondition(email: string) {
+  return or(
+    eq(jobRequests.accountEmail, email),
+    and(or(isNull(jobRequests.accountEmail), eq(jobRequests.accountEmail, "")), eq(jobRequests.email, email)),
+  );
 }
 
 export async function updateOpeningVisibility(id: number, isPublic: number) {
@@ -184,7 +186,7 @@ export async function updateAvailabilitySlot(input: { id: number; status: "avail
 export async function getApprovedRequestsForCustomer(user: { email: string | null }) {
   const db = await getDb();
   if (!db || !user.email) return [];
-  return db.select().from(jobRequests).where(and(or(eq(jobRequests.email, user.email), eq(jobRequests.accountEmail, user.email)), eq(jobRequests.customerAccess, "approved"))).orderBy(desc(jobRequests.createdAt));
+  return db.select().from(jobRequests).where(and(currentRequestEmailCondition(user.email), eq(jobRequests.customerAccess, "approved"))).orderBy(desc(jobRequests.createdAt));
 }
 
 export async function getCustomerPortal(user: { email: string | null }) {
@@ -250,26 +252,31 @@ export async function getAuthorizedProjectFile(fileId: number, user: { email: st
   return project ? file : undefined;
 }
 
+type ProjectFileMetadata = Omit<ProjectFile, "storageKey">;
+function withoutStorageKey({ storageKey: _storageKey, ...metadata }: ProjectFile): ProjectFileMetadata {
+  return metadata;
+}
+
 export async function getCustomerWorkspace(user: { email: string | null }) {
   const db = await getDb();
-  if (!db || !user.email) return { access: "pending" as const, customer: null, projects: [], requests: [], messages: [] as Message[], files: [] as ProjectFile[], events: [] as ProjectEvent[] };
-  const customer = (await db.select().from(customers).where(or(eq(customers.email, user.email), eq(customers.accountEmail, user.email))).limit(1))[0];
-  if (!customer) return { access: "pending" as const, customer: null, projects: [], requests: [], messages: [] as Message[], files: [] as ProjectFile[], events: [] as ProjectEvent[] };
+  if (!db || !user.email) return { access: "pending" as const, customer: null, projects: [], requests: [], messages: [] as Message[], files: [] as ProjectFileMetadata[], events: [] as ProjectEvent[] };
+  const customer = (await db.select().from(customers).where(currentCustomerEmailCondition(user.email)).limit(1))[0];
+  if (!customer) return { access: "pending" as const, customer: null, projects: [], requests: [], messages: [] as Message[], files: [] as ProjectFileMetadata[], events: [] as ProjectEvent[] };
   const customerRequests = await db.select().from(jobRequests).where(eq(jobRequests.customerId, customer.id)).orderBy(desc(jobRequests.createdAt));
   const approvedRequests = customerRequests.filter((request) => request.customerAccess === "approved");
-  if (!approvedRequests.length) return { access: "pending" as const, customer: null, projects: [], requests: [], messages: [] as Message[], files: [] as ProjectFile[], events: [] as ProjectEvent[] };
+  if (!approvedRequests.length) return { access: "pending" as const, customer: null, projects: [], requests: [], messages: [] as Message[], files: [] as ProjectFileMetadata[], events: [] as ProjectEvent[] };
   const approvedProjectIds = approvedRequests.flatMap((request) => request.projectId ? [request.projectId] : []);
   const customerProjects = approvedProjectIds.length ? await db.select().from(projects).where(and(eq(projects.customerId, customer.id), inArray(projects.id, approvedProjectIds))).orderBy(desc(projects.updatedAt)) : [];
   const projectIds = customerProjects.map((project) => project.id);
   const customerMessages = projectIds.length ? await db.select().from(messages).where(inArray(messages.projectId, projectIds)).orderBy(asc(messages.createdAt)) : [];
   const files = projectIds.length ? await db.select().from(projectFiles).where(and(eq(projectFiles.customerId, customer.id), inArray(projectFiles.projectId, projectIds))).orderBy(desc(projectFiles.createdAt)) : [];
   const events = projectIds.length ? await db.select().from(projectEvents).where(eq(projectEvents.customerId, customer.id)).orderBy(desc(projectEvents.createdAt)) : [];
-  return { access: "approved" as const, customer, projects: customerProjects, requests: approvedRequests, messages: customerMessages, files, events };
+  return { access: "approved" as const, customer, projects: customerProjects, requests: approvedRequests, messages: customerMessages, files: files.map(withoutStorageKey), events };
 }
 
 export async function getOwnerWorkspace() {
   const db = await getDb();
-  if (!db) return { customers: [] as Customer[], projects: [] as Project[], files: [] as ProjectFile[], events: [] as ProjectEvent[], messages: [] as Message[], stats: { customers: 0, projects: 0, active: 0, completed: 0, paused: 0, unread: 0 } };
+  if (!db) return { customers: [] as Customer[], projects: [] as Project[], files: [] as ProjectFileMetadata[], events: [] as ProjectEvent[], messages: [] as Message[], stats: { customers: 0, projects: 0, active: 0, completed: 0, paused: 0, unread: 0 } };
   const approvedUnlinked = await db.select().from(jobRequests).where(and(eq(jobRequests.customerAccess, "approved"), isNull(jobRequests.projectId))).limit(50);
   for (const request of approvedUnlinked) await approveRequestAndCreateProject(request.id, "approved");
   const customerRows = await db.select().from(customers).orderBy(desc(customers.updatedAt));
@@ -279,7 +286,7 @@ export async function getOwnerWorkspace() {
   const eventRows = projectIds.length ? await db.select().from(projectEvents).where(inArray(projectEvents.projectId, projectIds)).orderBy(desc(projectEvents.createdAt)) : [];
   const messageRows = projectIds.length ? await db.select().from(messages).where(inArray(messages.projectId, projectIds)).orderBy(asc(messages.createdAt)) : [];
   const activeStatuses = ["new", "reviewing", "need_more_information", "quoted", "scheduled", "in_progress"] as const;
-  return { customers: customerRows, projects: projectRows, files: fileRows, events: eventRows, messages: messageRows, stats: { customers: customerRows.length, projects: projectRows.length, active: projectRows.filter((project) => activeStatuses.includes(project.status as typeof activeStatuses[number])).length, completed: projectRows.filter((project) => project.status === "completed").length, paused: projectRows.filter((project) => project.status === "paused" || project.status === "archived").length, unread: messageRows.filter((message) => message.senderType === "customer" && !message.readAt).length } };
+  return { customers: customerRows, projects: projectRows, files: fileRows.map(withoutStorageKey), events: eventRows, messages: messageRows, stats: { customers: customerRows.length, projects: projectRows.length, active: projectRows.filter((project) => activeStatuses.includes(project.status as typeof activeStatuses[number])).length, completed: projectRows.filter((project) => project.status === "completed").length, paused: projectRows.filter((project) => project.status === "paused" || project.status === "archived").length, unread: messageRows.filter((message) => message.senderType === "customer" && !message.readAt).length } };
 }
 
 export async function ensureCustomerFromRequest(requestId: number) {
@@ -338,7 +345,7 @@ export async function getAuthorizedProject(projectId: number, user: { email: str
   if (!project) return undefined;
   if (owner) return project;
   if (!user.email) return undefined;
-  const customer = (await db.select().from(customers).where(and(eq(customers.id, project.customerId), or(eq(customers.email, user.email), eq(customers.accountEmail, user.email)))).limit(1))[0];
+  const customer = (await db.select().from(customers).where(and(eq(customers.id, project.customerId), currentCustomerEmailCondition(user.email))).limit(1))[0];
   if (!customer) return undefined;
   const approvedLink = (await db.select({ id: jobRequests.id }).from(jobRequests).where(and(eq(jobRequests.projectId, project.id), eq(jobRequests.customerId, customer.id), eq(jobRequests.customerAccess, "approved"))).limit(1))[0];
   return approvedLink ? project : undefined;

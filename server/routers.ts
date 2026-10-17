@@ -1,9 +1,8 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
+import { completePasswordSetup, loginWithPassword, logoutFromRequest, requestPasswordSetup, toPublicUser } from "./_core/password-auth";
 import { notifyOwner } from "./_core/notification";
-import { storageGetSignedUrl, storagePut } from "./storage";
+import { storagePut } from "./storage";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import {
   createCustomerMessage,
@@ -25,6 +24,7 @@ import {
   updateCustomerNotes,
   updateProjectStatus,
   updateBusinessSettings,
+  updateSiteContent,
   updateCustomerAccountEmail,
   updateCustomerAccess,
   updateJobRequestStatus,
@@ -37,6 +37,7 @@ import {
 } from "./db";
 import { systemRouter } from "./_core/systemRouter";
 import { ownerEmail, sendEmail } from "./email";
+import { SITE_APPEARANCE_PRESETS } from "../shared/siteContent";
 
 const jobRequestInput = z.object({
   customerName: z.string().min(2).max(160),
@@ -61,6 +62,21 @@ const adminOnlyProcedure = protectedProcedure.use(({ ctx, next }) => {
 });
 
 const messageInput = z.object({ requestId: z.number().int().positive(), body: z.string().trim().min(1).max(5000) });
+const siteContentInput = z.object({
+  heroLineOne: z.string().trim().min(1).max(80),
+  heroLineTwoPrefix: z.string().trim().min(1).max(80),
+  heroLineTwoAccent: z.string().trim().min(1).max(48),
+  heroIntro: z.string().trim().min(1).max(500),
+  servicesLineOne: z.string().trim().min(1).max(80),
+  servicesLineTwo: z.string().trim().min(1).max(80),
+  servicesIntro: z.string().trim().max(500),
+  serviceCards: z.array(z.object({ title: z.string().trim().min(1).max(96), description: z.string().trim().min(1).max(420) })).length(4),
+  specialistNote: z.string().trim().max(500),
+  aboutHeading: z.string().trim().min(1).max(120),
+  aboutBody: z.string().trim().max(1000),
+  footerText: z.string().trim().max(240),
+  appearancePreset: z.enum(SITE_APPEARANCE_PRESETS),
+});
 
 function safeStoredName(originalName: string) {
   const cleaned = originalName.replace(/[^a-zA-Z0-9._-]/g, "_").replace(/\.{2,}/g, ".").replace(/^\.+/, "").slice(0, 180);
@@ -70,10 +86,18 @@ function safeStoredName(originalName: string) {
 export const appRouter = router({
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
-    logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+    me: publicProcedure.query(({ ctx }) => ctx.user ? toPublicUser(ctx.user) : null),
+    login: publicProcedure
+      .input(z.object({ email: z.string().trim().email().max(320), password: z.string().min(1).max(128) }))
+      .mutation(({ ctx, input }) => loginWithPassword(input, ctx.req, ctx.res)),
+    requestPasswordSetup: publicProcedure
+      .input(z.object({ email: z.string().trim().email().max(320) }))
+      .mutation(({ input }) => requestPasswordSetup(input.email)),
+    completePasswordSetup: publicProcedure
+      .input(z.object({ token: z.string().min(40).max(128), password: z.string().min(1).max(128) }))
+      .mutation(({ ctx, input }) => completePasswordSetup(input, ctx.req, ctx.res)),
+    logout: publicProcedure.mutation(async ({ ctx }) => {
+      await logoutFromRequest(ctx.req, ctx.res);
       return { success: true } as const;
     }),
   }),
@@ -84,6 +108,8 @@ export const appRouter = router({
   site: router({
     publicTestimonials: publicProcedure.query(() => getPublicTestimonials()),
     publicSiteData: publicProcedure.query(() => getPublicSiteData()),
+    adminSiteContent: adminOnlyProcedure.query(async () => (await getPublicSiteData()).siteContent),
+    saveSiteContent: adminOnlyProcedure.input(siteContentInput).mutation(({ input }) => updateSiteContent(input)),
     submitJobRequest: publicProcedure.input(jobRequestInput).mutation(async ({ input }) => {
       const id = await createJobRequest(input);
       const contact = [input.email, input.phone].filter(Boolean).join(" / ") || "no contact provided";
@@ -136,7 +162,7 @@ export const appRouter = router({
       const work = await getOwnerWorkspace(); const customer = work.customers.find((item) => item.id === project.customerId); const recipient = customer?.accountEmail || customer?.email; if (recipient) { const body = `A new ${input.category} file was added to “${project.title}”.`; await createNotification({ recipientRole: "customer", recipientEmail: recipient, kind: "file_uploaded", title: "New project file", body, projectId: project.id }); await sendEmail({ to: recipient, subject: "New Island Handyman project file", text: body }); }
       return { success: true } as const;
     }),
-    getProjectFileUrl: adminOnlyProcedure.input(z.object({ fileId: z.number().int().positive() })).mutation(async ({ input }) => { const file = await getAuthorizedProjectFile(input.fileId, { email: null }, true); if (!file) throw new TRPCError({ code: "NOT_FOUND" }); return { url: await storageGetSignedUrl(file.storageKey) }; }),
+    getProjectFileUrl: adminOnlyProcedure.input(z.object({ fileId: z.number().int().positive() })).mutation(async ({ input }) => { const file = await getAuthorizedProjectFile(input.fileId, { email: null }, true); if (!file) throw new TRPCError({ code: "NOT_FOUND" }); return { url: `/api/private-files/${file.id}` }; }),
   }),
   customer: router({
     portal: protectedProcedure.query(({ ctx }) => getCustomerPortal(ctx.user)),
@@ -155,7 +181,7 @@ export const appRouter = router({
       await createNotification({ recipientRole: "owner", recipientEmail: ownerEmail() || null, kind: "file_uploaded", title: "New customer file", body: `A customer added ${input.originalName}.`, projectId: input.projectId });
       return { success: true } as const;
     }),
-    getProjectFileUrl: protectedProcedure.input(z.object({ fileId: z.number().int().positive() })).mutation(async ({ ctx, input }) => { const file = await getAuthorizedProjectFile(input.fileId, ctx.user); if (!file) throw new TRPCError({ code: "NOT_FOUND" }); return { url: await storageGetSignedUrl(file.storageKey) }; }),
+    getProjectFileUrl: protectedProcedure.input(z.object({ fileId: z.number().int().positive() })).mutation(async ({ ctx, input }) => { const file = await getAuthorizedProjectFile(input.fileId, ctx.user); if (!file) throw new TRPCError({ code: "NOT_FOUND" }); return { url: `/api/private-files/${file.id}` }; }),
     submitTestimonial: protectedProcedure.input(z.object({ requestId: z.number().int().positive(), body: z.string().trim().min(10).max(3000), customerWantsPublic: z.boolean(), beforeImageUrl: z.string().url().max(1000).nullable(), afterImageUrl: z.string().url().max(1000).nullable() })).mutation(({ ctx, input }) => createCustomerTestimonial(ctx.user, input.requestId, input.body, input.customerWantsPublic, input.beforeImageUrl, input.afterImageUrl)),
   }),
 });

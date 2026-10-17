@@ -57,6 +57,20 @@
       "when": 1790976964964,
       "tag": "0007_big_amazoness",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1791388572836,
+      "tag": "0008_messy_stardust",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1791766566987,
+      "tag": "0009_rainy_cyclops",
+      "breakpoints": true
     }
   ]
 }

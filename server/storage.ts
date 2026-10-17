@@ -1,6 +1,6 @@
 // Preconfigured storage helpers for Manus WebDev templates
 // Uploads via Forge Server presigned URL to S3 (PUT direct).
-// Downloads return /manus-storage/{key} paths served via 307 redirect.
+// Private downloads are served through /api/private-files/:fileId after project authorization.
 
 import { ENV } from "./_core/env";
 
@@ -32,7 +32,7 @@ export async function storagePut(
   relKey: string,
   data: Buffer | Uint8Array | string,
   contentType = "application/octet-stream",
-): Promise<{ key: string; url: string }> {
+): Promise<{ key: string }> {
   const { forgeUrl, forgeKey } = getForgeConfig();
   const key = appendHashSuffix(normalizeKey(relKey));
 
@@ -68,12 +68,7 @@ export async function storagePut(
     throw new Error(`Storage upload to S3 failed (${uploadResp.status})`);
   }
 
-  return { key, url: `/manus-storage/${key}` };
-}
-
-export async function storageGet(relKey: string): Promise<{ key: string; url: string }> {
-  const key = normalizeKey(relKey);
-  return { key, url: `/manus-storage/${key}` };
+  return { key };
 }
 
 export async function storageGetSignedUrl(relKey: string): Promise<string> {

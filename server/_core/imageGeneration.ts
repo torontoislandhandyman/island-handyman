@@ -15,7 +15,7 @@
  *     }]
  *   });
  */
-import { storagePut } from "server/storage";
+import { storageGetSignedUrl, storagePut } from "server/storage";
 import { ENV } from "./env";
 
 // Default model for generated sites. "MODEL_GPT_IMAGE_2" is the forge images.v1
@@ -96,13 +96,13 @@ export async function generateImage(
   const buffer = Buffer.from(base64Data, "base64");
 
   // Save to S3
-  const { url } = await storagePut(
+  const { key } = await storagePut(
     `generated/${Date.now()}.png`,
     buffer,
     result.image.mimeType
   );
   return {
-    url,
+    url: await storageGetSignedUrl(key),
   };
 }
 

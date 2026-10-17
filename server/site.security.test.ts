@@ -4,6 +4,7 @@ import { createNotification, getDb, getNotifications, markNotificationRead } fro
 import { eq } from "drizzle-orm";
 import { notifications } from "../drizzle/schema";
 import type { TrpcContext } from "./_core/context";
+import { DEFAULT_SITE_CONTENT } from "../shared/siteContent";
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
 
@@ -20,7 +21,8 @@ const regularUser: AuthenticatedUser = {
   openId: "regular-user",
   email: "customer@example.com",
   name: "Customer",
-  loginMethod: "manus",
+  passwordHash: null,
+  loginMethod: "password",
   role: "user",
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -67,6 +69,12 @@ describe("site security boundaries", () => {
     await expect(caller.site.adminOverview()).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 
+  it("keeps public site content readable for visitors but editable only by the owner", async () => {
+    const customerCaller = appRouter.createCaller(createContext(regularUser));
+    await expect(customerCaller.site.adminSiteContent()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(customerCaller.site.saveSiteContent(DEFAULT_SITE_CONTENT)).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
   it("exposes only public site settings and calendar data", async () => {
     const caller = appRouter.createCaller(createContext(null));
     const result = await caller.site.publicSiteData();
@@ -102,7 +110,8 @@ describe("site security boundaries", () => {
     await expect(ownerCaller.notifications.list()).resolves.toBeInstanceOf(Array);
   });
 
-  it("creates, scopes, and marks a customer notification as read", async () => {
+  // This integration test inserts and deletes a row in the configured database; opt in explicitly.
+  it.skipIf(process.env.RUN_DATABASE_INTEGRATION_TESTS !== "true")("creates, scopes, and marks a customer notification as read", async () => {
     const title = `Notification test ${Date.now()}`;
     await createNotification({ recipientRole: "customer", recipientEmail: regularUser.email, kind: "test", title, body: "Test notification" });
     const before = await getNotifications(regularUser);
