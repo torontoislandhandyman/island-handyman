@@ -44,6 +44,52 @@
         .serif-heading {
             font-family: 'Playfair Display', serif;
         }
+
+        .live-status-badge {
+            --live-status-color: #9baea1;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 100%;
+            min-height: 40px;
+            padding: 9px 14px;
+            border: 1px solid rgba(184, 230, 53, 0.26);
+            border-radius: 9999px;
+            background: rgba(20, 41, 31, 0.9);
+            color: #e5eee8;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+            font-size: 0.875rem;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+        .live-status-badge[data-status="available"] { --live-status-color: #4bd486; border-color: rgba(75, 212, 134, 0.35); }
+        .live-status-badge[data-status="busy"] { --live-status-color: #f3c453; border-color: rgba(243, 196, 83, 0.38); }
+        .live-status-badge[data-status="offline"] { --live-status-color: #f1766d; border-color: rgba(241, 118, 109, 0.38); }
+        .live-status-dot {
+            position: relative;
+            flex: 0 0 10px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--live-status-color);
+            color: var(--live-status-color);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--live-status-color) 42%, transparent);
+        }
+        .live-status-dot::after {
+            position: absolute;
+            inset: -4px;
+            border: 1px solid currentColor;
+            border-radius: inherit;
+            content: "";
+            animation: live-status-pulse 1.8s ease-out infinite;
+        }
+        @keyframes live-status-pulse {
+            0% { opacity: 0.75; transform: scale(0.65); }
+            100% { opacity: 0; transform: scale(1.8); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .live-status-dot::after { animation: none; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-lime selection:text-brand-bg">
@@ -97,6 +143,11 @@
                     <p class="text-lg text-brand-textMuted font-normal max-w-xl leading-relaxed">
                         Practical help for repairs, upkeep and small improvements around Toronto Island. Tell me what's happening, and I'll make the next step clear.
                     </p>
+
+                    <div id="live-status-badge" class="live-status-badge" data-status="loading" role="status" aria-live="polite" aria-atomic="true" aria-busy="true" aria-label="Current island status">
+                        <span class="live-status-dot" aria-hidden="true"></span>
+                        <span id="live-status-label">Checking island status…</span>
+                    </div>
 
                     <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                         <a href="#services" class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-brand-card hover:bg-brand-border text-brand-textMain font-medium text-base transition-colors border border-brand-border/60">
@@ -216,6 +267,49 @@
             </div>
         </section>
 
+        <!-- About Section -->
+        <section id="about" class="py-16 border-t border-brand-border/40" aria-labelledby="about-heading">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <div class="lg:col-span-5">
+                    <span class="text-xs font-bold uppercase tracking-widest text-brand-lime">A local, practical approach</span>
+                    <h2 id="about-heading" class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-4 serif-heading">Practical help, rooted on the Islands.</h2>
+                </div>
+                <div class="lg:col-span-7 bg-brand-card p-6 sm:p-8 rounded-2xl border border-brand-border">
+                    <p class="text-brand-textMuted text-base leading-relaxed mb-4">Independent local service for Toronto Island residents across Algonquin and Ward's Island. Each job starts with a direct assessment of the home's needs.</p>
+                    <p class="text-brand-textMuted text-base leading-relaxed">Before work begins, logistics, timing, and scope are discussed up front. The aim is dependable work carried out cleanly and with respect for community standards.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compact FAQ -->
+        <section id="common-questions" class="py-16 bg-brand-bg/50 border-t border-brand-border/40" aria-labelledby="faq-heading">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-8 max-w-2xl">
+                    <span class="text-xs font-bold uppercase tracking-widest text-brand-lime">Good to know</span>
+                    <h2 id="faq-heading" class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-3 serif-heading">A few common questions.</h2>
+                    <p class="text-brand-textMuted text-base">Straight answers about service area, scope, and next steps.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
+                        <summary class="text-brand-textMain font-semibold cursor-pointer">Where is service available?</summary>
+                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">Independent local service is for Toronto Island residents across Algonquin and Ward's Island.</p>
+                    </details>
+                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
+                        <summary class="text-brand-textMain font-semibold cursor-pointer">What kinds of jobs can I ask about?</summary>
+                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">Home repairs, mounting and assembly, outdoor work, and small improvements are among the services listed.</p>
+                    </details>
+                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
+                        <summary class="text-brand-textMain font-semibold cursor-pointer">Do you take on specialist electrical, plumbing, or heating work?</summary>
+                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">The scope is reviewed carefully. Some jobs may require a licensed professional or specialized trade authorization.</p>
+                    </details>
+                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
+                        <summary class="text-brand-textMain font-semibold cursor-pointer">What happens before work begins?</summary>
+                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">The next step is a direct assessment, followed by an upfront discussion of logistics, timing, and scope.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
         <!-- How It Works Section -->
         <section id="how-it-works" class="py-16 bg-brand-bg/50 border-t border-brand-border/40">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -284,8 +378,10 @@
                 </div>
 
                 <div class="flex flex-wrap gap-6 text-xs font-medium">
+                    <a href="#about" class="hover:text-brand-lime transition-colors">About</a>
                     <a href="#services" class="hover:text-brand-lime transition-colors">Services</a>
                     <a href="#how-it-works" class="hover:text-brand-lime transition-colors">How it works</a>
+                    <a href="#common-questions" class="hover:text-brand-lime transition-colors">Questions</a>
                 </div>
 
             </div>
@@ -301,5 +397,45 @@
             </div>
         </div>
     </footer>
+    <script>
+        (() => {
+            const badge = document.getElementById("live-status-badge");
+            const label = document.getElementById("live-status-label");
+            const statusMap = {
+                available: { key: "available", label: "Available on Island" },
+                busy: { key: "busy", label: "Booked / Limited Availability" },
+                booked: { key: "busy", label: "Booked / Limited Availability" },
+                limited: { key: "busy", label: "Booked / Limited Availability" },
+                offline: { key: "offline", label: "Off the Island" },
+                off_island: { key: "offline", label: "Off the Island" },
+                "off-island": { key: "offline", label: "Off the Island" }
+            };
+
+            const setStatus = (key, text, isBusy) => {
+                badge.dataset.status = key;
+                badge.setAttribute("aria-busy", String(isBusy));
+                badge.setAttribute("aria-label", `Current island status: ${text}`);
+                label.textContent = text;
+            };
+
+            fetch("./status.json", { cache: "no-store", headers: { Accept: "application/json" } })
+                .then((response) => {
+                    if (!response.ok) throw new Error("Status configuration unavailable");
+                    return response.json();
+                })
+                .then((config) => {
+                    const status = typeof config?.status === "string" ? config.status.trim().toLowerCase() : "";
+                    const mapped = Object.prototype.hasOwnProperty.call(statusMap, status) ? statusMap[status] : null;
+                    if (!mapped) {
+                        setStatus("unavailable", "Status unavailable", false);
+                        return;
+                    }
+                    const configuredLabel = typeof config.label === "string" ? config.label.trim() : "";
+                    const displayLabel = configuredLabel === mapped.label ? configuredLabel : mapped.label;
+                    setStatus(mapped.key, displayLabel, false);
+                })
+                .catch(() => setStatus("unavailable", "Status unavailable", false));
+        })();
+    </script>
 </body>
 </html>
