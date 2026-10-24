@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Island Handyman | Independent Local Service • Toronto Island</title>
+    <script async src="https://cloud.umami.is/script.js" data-website-id="8bf1cf74-e28f-43f5-8604-55cbd6c"></script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -65,6 +66,14 @@
         .live-status-badge[data-status="available"] { --live-status-color: #4bd486; border-color: rgba(75, 212, 134, 0.35); }
         .live-status-badge[data-status="busy"] { --live-status-color: #f3c453; border-color: rgba(243, 196, 83, 0.38); }
         .live-status-badge[data-status="offline"] { --live-status-color: #f1766d; border-color: rgba(241, 118, 109, 0.38); }
+        .live-status-message {
+            max-width: 36rem;
+            margin: 0;
+            color: #aebeb4;
+            font-size: 0.78rem;
+            line-height: 1.5;
+        }
+        .live-status-message[hidden] { display: none; }
         .live-status-dot {
             position: relative;
             flex: 0 0 10px;
@@ -144,9 +153,12 @@
                         Practical help for repairs, upkeep and small improvements around Toronto Island. Tell me what's happening, and I'll make the next step clear.
                     </p>
 
-                    <div id="live-status-badge" class="live-status-badge" data-status="loading" role="status" aria-live="polite" aria-atomic="true" aria-busy="true" aria-label="Current island status">
-                        <span class="live-status-dot" aria-hidden="true"></span>
-                        <span id="live-status-label">Checking island status…</span>
+                    <div class="flex flex-col items-start gap-2">
+                        <div id="live-status-badge" class="live-status-badge" data-status="loading" role="status" aria-live="polite" aria-atomic="true" aria-busy="true" aria-label="Current island status">
+                            <span class="live-status-dot" aria-hidden="true"></span>
+                            <span id="live-status-label">Checking island status…</span>
+                        </div>
+                        <p id="live-status-message" class="live-status-message" aria-live="polite" aria-atomic="true" hidden></p>
                     </div>
 
                     <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -401,21 +413,25 @@
         (() => {
             const badge = document.getElementById("live-status-badge");
             const label = document.getElementById("live-status-label");
+            const message = document.getElementById("live-status-message");
             const statusMap = {
                 available: { key: "available", label: "Available on Island" },
-                busy: { key: "busy", label: "Booked / Limited Availability" },
-                booked: { key: "busy", label: "Booked / Limited Availability" },
-                limited: { key: "busy", label: "Booked / Limited Availability" },
+                busy: { key: "busy", label: "Booked / Busy" },
+                booked: { key: "busy", label: "Booked / Busy" },
+                limited: { key: "busy", label: "Limited Availability" },
                 offline: { key: "offline", label: "Off the Island" },
                 off_island: { key: "offline", label: "Off the Island" },
                 "off-island": { key: "offline", label: "Off the Island" }
             };
 
-            const setStatus = (key, text, isBusy) => {
+            const setStatus = (key, text, isBusy, messageText) => {
                 badge.dataset.status = key;
                 badge.setAttribute("aria-busy", String(isBusy));
                 badge.setAttribute("aria-label", `Current island status: ${text}`);
                 label.textContent = text;
+                const cleanMessage = typeof messageText === "string" ? messageText.trim() : "";
+                message.textContent = cleanMessage;
+                message.hidden = !cleanMessage;
             };
 
             fetch("./status.json", { cache: "no-store", headers: { Accept: "application/json" } })
@@ -427,14 +443,14 @@
                     const status = typeof config?.status === "string" ? config.status.trim().toLowerCase() : "";
                     const mapped = Object.prototype.hasOwnProperty.call(statusMap, status) ? statusMap[status] : null;
                     if (!mapped) {
-                        setStatus("unavailable", "Status unavailable", false);
+                        setStatus("unavailable", "Status unavailable", false, "");
                         return;
                     }
                     const configuredLabel = typeof config.label === "string" ? config.label.trim() : "";
                     const displayLabel = configuredLabel === mapped.label ? configuredLabel : mapped.label;
-                    setStatus(mapped.key, displayLabel, false);
+                    setStatus(mapped.key, displayLabel, false, config.message);
                 })
-                .catch(() => setStatus("unavailable", "Status unavailable", false));
+                .catch(() => setStatus("unavailable", "Status unavailable", false, ""));
         })();
     </script>
 </body>
