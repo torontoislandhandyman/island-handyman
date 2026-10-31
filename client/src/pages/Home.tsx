@@ -359,9 +359,32 @@ export default function Home() {
             <a href="#services">Services</a>
           </nav>
         </div>
+           <footer className="ih-footer">
+        <div className="ih-container ih-footer-inner">
+          <div className="ih-footer-main">
+            <Link href="/" className="ih-brand" aria-label="Island Handyman home">
+              <img className="ih-brand-mark" src="/island-handyman-mark.svg" alt="" aria-hidden="true" />
+              <span>ISLAND HANDYMAN</span>
+            </Link>
+            <p>{siteContent.footerText}</p>
+            <div className="ih-contact-placeholders">
+              {contactPhone && <a href={phoneHref}>Call {contactPhone}</a>}
+              {contactEmail && <a href={`mailto:${contactEmail}`}>Email {contactEmail}</a>}
+              {!contactPhone && !contactEmail && <span>Need to reach me? Use the job request form.</span>}
+            </div>
+            <p className="ih-privacy-copy">
+              Privacy: contact details, messages, photos and project documents are used only to review and manage your work. Public testimonials or photos are shared only with customer and owner permission.
+            </p>
+          </div>
+          <nav className="ih-footer-links" aria-label="Footer navigation">
+            <Link href="/request">Contact me</Link>
+            <Link href="/login?next=%2Fcustomer">Client sign-in</Link>
+            <a href="#services">Services</a>
+          </nav>
+        </div>
+        <TermsOfService />
       </footer>
-
-      <TermsOfService />
     </div>
   );
+}
 }
