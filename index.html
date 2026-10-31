@@ -5,26 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Island Handyman | Independent Local Service • Toronto Island</title>
     <script defer src="https://cloud.umami.is/script.js" data-website-id="8bf1cf74-e28f-43f5-8604-55cbd60d90da"></script>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            bg: '#0c1a14',       /* Deepest forest green */
-                            card: '#14291f',     /* Dark green card container */
-                            border: '#1f3a2d',   /* Subtle divider border */
-                            lime: '#b8e635',     /* Vibrant key-lime accent */
+                            bg: '#0c1a14',
+                            card: '#14291f',
+                            border: '#1f3a2d',
+                            lime: '#b8e635',
                             limeHover: '#a3d126',
-                            textMain: '#e5eee8', /* Off-white primary text */
-                            textMuted: '#8ba695',/* Soft green secondary text */
+                            textMain: '#e5eee8',
+                            textMuted: '#8ba695',
                             tagBg: '#1b382b'
                         }
                     },
@@ -45,7 +42,6 @@
         .serif-heading {
             font-family: 'Playfair Display', serif;
         }
-
         .live-status-badge {
             --live-status-color: #9baea1;
             display: inline-flex;
@@ -102,18 +98,14 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-lime selection:text-brand-bg">
-
-    <!-- Top Announcement / Location Header Bar -->
     <div class="bg-brand-card/80 border-b border-brand-border py-2 text-xs text-brand-textMuted text-center tracking-wide">
         <span>Independent local service</span>
         <span class="mx-2">•</span>
         <span class="text-brand-textMain font-medium">Toronto Island</span>
     </div>
 
-    <!-- Main Navigation -->
     <header class="sticky top-0 z-40 bg-brand-bg/90 backdrop-blur-md border-b border-brand-border/60">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo -->
             <a href="#" class="flex items-center gap-3 group">
                 <div class="w-10 h-10 rounded-xl bg-brand-lime flex items-center justify-center font-bold text-brand-bg text-xl shadow-lg shadow-brand-lime/10 group-hover:bg-brand-limeHover transition-colors">
                     H
@@ -124,7 +116,6 @@
                 </div>
             </a>
 
-            <!-- Desktop Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-brand-textMuted">
                 <a href="#services" class="hover:text-brand-lime transition-colors">Services</a>
                 <a href="#how-it-works" class="hover:text-brand-lime transition-colors">How it works</a>
@@ -134,21 +125,18 @@
     </header>
 
     <main class="flex-grow">
-        <!-- Hero Section -->
         <section class="py-12 lg:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-                
-                <!-- Hero Left Column -->
                 <div class="lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-tagBg text-brand-textMuted text-xs font-semibold tracking-wider uppercase border border-brand-border/70">
                         <span class="w-2 h-2 rounded-full bg-brand-lime"></span>
                         Repairs • Maintenance • Improvements
                     </div>
-                    
+
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-normal text-brand-textMain leading-[1.15] serif-heading">
                         Good work, <br class="hidden sm:inline"/>close to <span class="text-brand-lime font-light italic">home.</span>
                     </h1>
-                    
+
                     <p class="text-lg text-brand-textMuted font-normal max-w-xl leading-relaxed">
                         Practical help for repairs, upkeep and small improvements around Toronto Island. Tell me what's happening, and I'll make the next step clear.
                     </p>
@@ -168,18 +156,15 @@
                     </div>
                 </div>
 
-                <!-- Hero Right Column / Visual Image Frame -->
                 <div class="lg:col-span-5">
                     <div class="bg-brand-card p-3 rounded-2xl border border-brand-border shadow-2xl relative overflow-hidden group">
                         <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-brand-bg">
-                            <!-- Aerial photo of Toronto Island -->
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Toronto_Islands_2025-05-08.jpg" 
-                                 alt="Aerial bird's eye view of Ward's and Algonquin Island, Toronto Islands" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" 
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Toronto_Islands_2025-05-08.jpg"
+                                 alt="Aerial bird's eye view of Ward's and Algonquin Island, Toronto Islands"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
                                  onerror="this.src='https://placehold.co/800x600/14291f/b8e635?text=Toronto+Island+Aerial+View'"/>
                             <div class="absolute inset-0 bg-gradient-to-t from-brand-bg/80 via-transparent to-transparent"></div>
-                            
-                            <!-- Location Badge overlay -->
+
                             <div class="absolute top-3 left-3 bg-brand-bg/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-brand-border/80 text-xs font-medium text-brand-textMain flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-brand-lime" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 0 1 0-9.9zM10 11.5A1.5 1.5 0 1 0 10 8a1.5 1.5 0 0 0 0 3.5z" clip-rule="evenodd"/></svg>
                                 Ward's & Algonquin Island (Aerial View)
@@ -191,14 +176,11 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- Services Section -->
         <section id="services" class="py-16 bg-brand-bg border-t border-brand-border/40">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                
                 <div class="mb-12 max-w-2xl">
                     <span class="text-xs font-bold uppercase tracking-widest text-brand-lime">What I Can Help With</span>
                     <h2 class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-3 serif-heading">
@@ -229,219 +211,4 @@
                             </div>
                             <h3 class="text-xl font-semibold text-brand-textMain mb-3">Mounting & assembly</h3>
                             <p class="text-sm text-brand-textMuted leading-relaxed">
-                                Picture hanging, shelves, TVs, speakers, appliance installation, and household furniture assembly or rebuilding.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
-                        <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 3v4M3 5h4M6 17v4m-2-2h4M14 3v4m-2-2h4M14 17v4m-2-2h4M6 9h12M6 15h12"/></svg>
-                            </div>
-                            <h3 class="text-xl font-semibold text-brand-textMain mb-3">Outdoor work</h3>
-                            <p class="text-sm text-brand-textMuted leading-relaxed">
-                                Yard work, brush cutting, hedge grooming, raking, power washing, decks, patios, fences, gutters, and garden walkways.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
-                        <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6v6l4 2m4-2a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
-                            </div>
-                            <h3 class="text-xl font-semibold text-brand-textMain mb-3">Improvements</h3>
-                            <p class="text-sm text-brand-textMuted leading-relaxed">
-                                Carpentry, kitchen cabinets, restoration, eco-friendly upgrades, accessibility modifications, consultation, and urgent repairs.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="mt-8 bg-brand-card/60 p-4 sm:p-5 rounded-xl border border-brand-border flex items-start sm:items-center gap-4 text-xs sm:text-sm text-brand-textMuted">
-                    <div class="p-2 rounded-lg bg-brand-tagBg text-brand-lime shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <p>
-                        <strong class="text-brand-textMain font-medium">Scope note:</strong> For electrical, plumbing, heating and other specialist work, I review the scope carefully. Some jobs may require a licensed professional or specialized trade authorization.
-                    </p>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="py-16 border-t border-brand-border/40" aria-labelledby="about-heading">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-                <div class="lg:col-span-5">
-                    <span class="text-xs font-bold uppercase tracking-widest text-brand-lime">A local, practical approach</span>
-                    <h2 id="about-heading" class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-4 serif-heading">Practical help, rooted on the Islands.</h2>
-                </div>
-                <div class="lg:col-span-7 bg-brand-card p-6 sm:p-8 rounded-2xl border border-brand-border">
-                    <p class="text-brand-textMuted text-base leading-relaxed mb-4">Independent local service for Toronto Island residents across Algonquin and Ward's Island. Each job starts with a direct assessment and a practical understanding of the work to be done.</p>
-                    <p class="text-brand-textMuted text-base leading-relaxed">Before work begins, logistics, timing, and scope are discussed up front. The aim is dependable work carried out cleanly and with respect for the home, the property, and the island community.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Compact FAQ -->
-        <section id="common-questions" class="py-16 bg-brand-bg/50 border-t border-brand-border/40" aria-labelledby="faq-heading">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8 max-w-2xl">
-                    <span class="text-xs font-bold uppercase tracking-widest text-brand-lime">Good to know</span>
-                    <h2 id="faq-heading" class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-3 serif-heading">A few common questions.</h2>
-                    <p class="text-brand-textMuted text-base">Straight answers about service area, scope, and next steps.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
-                        <summary class="text-brand-textMain font-semibold cursor-pointer">Where is service available?</summary>
-                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">Independent local service is for Toronto Island residents across Algonquin and Ward's Island.</p>
-                    </details>
-                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
-                        <summary class="text-brand-textMain font-semibold cursor-pointer">What kinds of jobs can I ask about?</summary>
-                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">Home repairs, mounting and assembly, outdoor work, and small improvements are among the services listed.</p>
-                    </details>
-                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
-                        <summary class="text-brand-textMain font-semibold cursor-pointer">Do you take on specialist electrical, plumbing, or heating work?</summary>
-                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">The scope is reviewed carefully. Some jobs may require a licensed professional or specialized trade authorization depending on the work involved.</p>
-                    </details>
-                    <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
-                        <summary class="text-brand-textMain font-semibold cursor-pointer">What happens before work begins?</summary>
-                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">The next step is a direct assessment, followed by an upfront discussion of logistics, timing, and scope.</p>
-                    </details>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works Section -->
-        <section id="how-it-works" class="py-16 bg-brand-bg/50 border-t border-brand-border/40">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                    
-                    <div class="lg:col-span-5">
-                        <span class="text-xs font-bold uppercase tracking-widest text-brand-lime">A local, practical approach</span>
-                        <h2 class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-4 serif-heading">
-                            No hard sell. Just a clear next step.
-                        </h2>
-                        <p class="text-brand-textMuted text-base leading-relaxed mb-6">
-                            Reliable local service for Toronto Island residents across Algonquin and Ward's Island.
-                        </p>
-                    </div>
-
-                    <div class="lg:col-span-7 space-y-4">
-                        <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex items-start gap-5">
-                            <span class="text-2xl font-bold text-brand-lime font-mono bg-brand-tagBg w-12 h-12 rounded-xl flex items-center justify-center border border-brand-border shrink-0">01</span>
-                            <div>
-                                <h3 class="text-lg font-semibold text-brand-textMain mb-1">Local Assessment</h3>
-                                <p class="text-sm text-brand-textMuted leading-relaxed">
-                                    Direct assessment tailored specifically to the unique home and property needs of island living.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex items-start gap-5">
-                            <span class="text-2xl font-bold text-brand-lime font-mono bg-brand-tagBg w-12 h-12 rounded-xl flex items-center justify-center border border-brand-border shrink-0">02</span>
-                            <div>
-                                <h3 class="text-lg font-semibold text-brand-textMain mb-1">Clear Communication</h3>
-                                <p class="text-sm text-brand-textMuted leading-relaxed">
-                                    Upfront discussion regarding logistics, timing, and scope before any work begins.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex items-start gap-5">
-                            <span class="text-2xl font-bold text-brand-lime font-mono bg-brand-tagBg w-12 h-12 rounded-xl flex items-center justify-center border border-brand-border shrink-0">03</span>
-                            <div>
-                                <h3 class="text-lg font-semibold text-brand-textMain mb-1">Quality Execution</h3>
-                                <p class="text-sm text-brand-textMuted leading-relaxed">
-                                    Dependable work executed cleanly with full respect for community standards.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="bg-brand-card/90 border-t border-brand-border/80 py-12 text-sm text-brand-textMuted">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-8 border-b border-brand-border/50">
-                
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-brand-lime flex items-center justify-center font-bold text-brand-bg text-base">
-                        H
-                    </div>
-                    <span class="font-bold tracking-wider text-brand-textMain uppercase text-sm">ISLAND HANDYMAN</span>
-                </div>
-
-                <div class="flex flex-wrap gap-6 text-xs font-medium">
-                    <a href="#about" class="hover:text-brand-lime transition-colors">About</a>
-                    <a href="#services" class="hover:text-brand-lime transition-colors">Services</a>
-                    <a href="#how-it-works" class="hover:text-brand-lime transition-colors">How it works</a>
-                    <a href="#common-questions" class="hover:text-brand-lime transition-colors">Questions</a>
-                    <a href="./terms.html" class="hover:text-brand-lime transition-colors">Terms of Service</a>
-                </div>
-
-            </div>
-
-            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
-                <p>© 2026 Island Handyman. Independent local service for Toronto Island homes.</p>
-                
-                <div class="px-3 py-1.5 rounded-full bg-brand-tagBg border border-brand-border text-brand-lime font-medium flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-brand-lime animate-pulse"></span>
-                    Full site coming soon • Independent local service for Toronto Island homes
-                </div>
-            </div>
-        </div>
-    </footer>
-    <script>
-        (() => {
-            const badge = document.getElementById("live-status-badge");
-            const label = document.getElementById("live-status-label");
-            const message = document.getElementById("live-status-message");
-            const statusMap = {
-                available: { key: "available", label: "Available on Island" },
-                busy: { key: "busy", label: "Booked / Busy" },
-                booked: { key: "busy", label: "Booked / Busy" },
-                limited: { key: "busy", label: "Limited Availability" },
-                offline: { key: "offline", label: "Off the Island" },
-                off_island: { key: "offline", label: "Off the Island" },
-                "off-island": { key: "offline", label: "Off the Island" }
-            };
-
-            const setStatus = (key, text, isBusy, messageText) => {
-                badge.dataset.status = key;
-                badge.setAttribute("aria-busy", String(isBusy));
-                badge.setAttribute("aria-label", `Current island status: ${text}`);
-                label.textContent = text;
-                const cleanMessage = typeof messageText === "string" ? messageText.trim() : "";
-                message.textContent = cleanMessage;
-                message.hidden = !cleanMessage;
-            };
-
-            fetch("./status.json", { cache: "no-store", headers: { Accept: "application/json" } })
-                .then((response) => {
-                    if (!response.ok) throw new Error("Status configuration unavailable");
-                    return response.json();
-                })
-                .then((config) => {
-                    const status = typeof config?.status === "string" ? config.status.trim().toLowerCase() : "";
-                    const mapped = Object.prototype.hasOwnProperty.call(statusMap, status) ? statusMap[status] : null;
-                    if (!mapped) {
-                        setStatus("unavailable", "Status unavailable", false, "");
-                        return;
-                    }
-                    const configuredLabel = typeof config.label === "string" ? config.label.trim() : "";
-                    const displayLabel = configuredLabel === mapped.label ? configuredLabel : mapped.label;
-                    setStatus(mapped.key, displayLabel, false, config.message);
-                })
-                .catch(() => setStatus("unavailable", "Status unavailable", false, ""));
-        })();
-    </script>
-</body>
-</html>
+                                Picture hanging, shelves, TVs, speakers, appliance installation
