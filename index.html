@@ -1,166 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service — Island Handyman</title>
-    <style>
-        :root {
-            --primary-dark: #1b3022;
-            --accent-green: #2d4a35;
-            --cream-bg: #fbf9f5;
-            --cream-card: #f4efe6;
-            --text-main: #2c352e;
-            --text-muted: #5c6b5e;
-            --border-color: #e3dec9;
-        }
+import { Toaster } from "@/components/ui/sonner";[span_1](start_span)[span_1](end_span)
+import { TooltipProvider } from "@/components/ui/tooltip";[span_2](start_span)[span_2](end_span)
+import NotFound from "@/pages/NotFound";[span_3](start_span)[span_3](end_span)
+import Admin from "@/pages/Admin";[span_4](start_span)[span_4](end_span)
+import Customer from "@/pages/Customer";[span_5](start_span)[span_5](end_span)
+import { ForgotPasswordPage, LoginPage, ResetPasswordPage } from "@/pages/Login";[span_6](start_span)[span_6](end_span)
+import Home from "@/pages/Home";[span_7](start_span)[span_7](end_span)
+import Request from "@/pages/Request";[span_8](start_span)[span_8](end_span)
+import SiteSettings from "@/pages/SiteSettings";[span_9](start_span)[span_9](end_span)
+import { useEffect, type ReactNode } from "react";[span_10](start_span)[span_10](end_span)
+import { Link, Route, Switch, useLocation } from "wouter";[span_11](start_span)[span_11](end_span)
+import { useAuth } from "@/_core/hooks/useAuth";[span_12](start_span)[span_12](end_span)
+import { trpc } from "@/lib/trpc";[span_13](start_span)[span_13](end_span)
+import ErrorBoundary from "./components/ErrorBoundary";[span_14](start_span)[span_14](end_span)
+import { ThemeProvider } from "./contexts/ThemeContext";[span_15](start_span)[span_15](end_span)
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--cream-bg);
-            color: var(--text-main);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
+function ProtectedRoute({ children, ownerOnly = false }: { children: ReactNode; ownerOnly?: boolean }) {[span_16](start_span)[span_16](end_span)
+  const { user, loading } = useAuth();[span_17](start_span)[span_17](end_span)
+  const [, setLocation] = useLocation();[span_18](start_span)[span_18](end_span)
 
-        header {
-            background-color: var(--primary-dark);
-            color: #ffffff;
-            padding: 2rem 1rem;
-            text-align: center;
-        }
+  useEffect(() => {[span_19](start_span)[span_19](end_span)
+    if (loading || user) return;[span_20](start_span)[span_20](end_span)
+    const currentPath = window.location.pathname;[span_21](start_span)[span_21](end_span)
+    const next = ["/customer", "/vip", "/admin", "/admin/settings"].includes(currentPath) ? currentPath : "/customer";[span_22](start_span)[span_22](end_span)
+    setLocation(`/login?next=${encodeURIComponent(next)}`);[span_23](start_span)[span_23](end_span)
+  }, [loading, user, setLocation]);[span_24](start_span)[span_24](end_span)
 
-        header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2rem;
-        }
+  if (loading || !user) {[span_25](start_span)[span_25](end_span)
+    return <div className="ih-admin-loading" role="status">Checking your private access…</div>;[span_26](start_span)[span_26](end_span)
+  }[span_27](start_span)[span_27](end_span)
+  if (ownerOnly && user.role !== "admin") {[span_28](start_span)[span_28](end_span)
+    return ([span_29](start_span)[span_29](end_span)
+      <div className="ih-admin-denied">[span_30](start_span)[span_30](end_span)
+        <h1>Owner access required</h1>[span_31](start_span)[span_31](end_span)
+        <p>This sign-in does not have permission to manage the Island Handyman workspace.</p>[span_32](start_span)[span_32](end_span)
+        <Link className="ih-text-link" href="/customer">Go to customer access</Link>[span_33](start_span)[span_33](end_span)
+      </div>[span_34](start_span)[span_34](end_span)
+    );[span_35](start_span)[span_35](end_span)
+  }[span_36](start_span)[span_36](end_span)
+  return <>{children}</>;[span_37](start_span)[span_37](end_span)
+}[span_38](start_span)[span_38](end_span)
 
-        header p {
-            margin: 0;
-            color: #d1dcd2;
-            font-size: 0.95rem;
-        }
+function SiteThemeBridge() {[span_39](start_span)[span_39](end_span)
+  const { data } = trpc.site.publicSiteData.useQuery(undefined, { staleTime: 60_000 });[span_40](start_span)[span_40](end_span)
+  const preset = data?.siteContent.appearancePreset ?? "evergreen";[span_41](start_span)[span_41](end_span)
+  useEffect(() => {[span_42](start_span)[span_42](end_span)
+    document.documentElement.dataset.sitePreset = preset;[span_43](start_span)[span_43](end_span)
+  }, [preset]);[span_44](start_span)[span_44](end_span)
+  return null;[span_45](start_span)[span_45](end_span)
+}[span_46](start_span)[span_46](end_span)
 
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
+function CustomerRoute() {[span_47](start_span)[span_47](end_span)
+  return <ProtectedRoute><Customer /></ProtectedRoute>;[span_48](start_span)[span_48](end_span)
+}[span_49](start_span)[span_49](end_span)
 
-        .card {
-            background-color: var(--cream-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-        }
+function AdminRoute() {[span_50](start_span)[span_50](end_span)
+  return <ProtectedRoute ownerOnly><Admin /></ProtectedRoute>;[span_51](start_span)[span_51](end_span)
+}[span_52](start_span)[span_52](end_span)
 
-        h2 {
-            color: var(--primary-dark);
-            font-size: 1.35rem;
-            margin-top: 2rem;
-            margin-bottom: 0.75rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.3rem;
-        }
+function SiteSettingsRoute() {[span_53](start_span)[span_53](end_span)
+  return <ProtectedRoute ownerOnly><SiteSettings /></ProtectedRoute>;[span_54](start_span)[span_54](end_span)
+}[span_55](start_span)[span_55](end_span)
 
-        h2:first-of-type {
-            margin-top: 0;
-        }
+function Router() {[span_56](start_span)[span_56](end_span)
+  return ([span_57](start_span)[span_57](end_span)
+    <Switch>[span_58](start_span)[span_58](end_span)
+      <Route path="/" component={Home} />[span_59](start_span)[span_59](end_span)
+      <Route path="/request" component={Request} />[span_60](start_span)[span_60](end_span)
+      <Route path="/login" component={LoginPage} />[span_61](start_span)[span_61](end_span)
+      <Route path="/forgot-password" component={ForgotPasswordPage} />[span_62](start_span)[span_62](end_span)
+      <Route path="/reset-password" component={ResetPasswordPage} />[span_63](start_span)[span_63](end_span)
+      <Route path="/customer" component={CustomerRoute} />[span_64](start_span)[span_64](end_span)
+      <Route path="/vip" component={CustomerRoute} />[span_65](start_span)[span_65](end_span)
+      <Route path="/admin/settings" component={SiteSettingsRoute} />[span_66](start_span)[span_66](end_span)
+      <Route path="/admin" component={AdminRoute} />[span_67](start_span)[span_67](end_span)
+      <Route path="/404" component={NotFound} />[span_68](start_span)[span_68](end_span)
+      <Route component={NotFound} />[span_69](start_span)[span_69](end_span)
+    </Switch>[span_70](start_span)[span_70](end_span)
+  );[span_71](start_span)[span_71](end_span)
+}[span_72](start_span)[span_72](end_span)
 
-        p, li {
-            color: var(--text-main);
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
+function App() {[span_73](start_span)[span_73](end_span)
+  return ([span_74](start_span)[span_74](end_span)
+    <ErrorBoundary>[span_75](start_span)[span_75](end_span)
+      <ThemeProvider defaultTheme="dark">[span_76](start_span)[span_76](end_span)
+        <TooltipProvider>[span_77](start_span)[span_77](end_span)
+          <Toaster />[span_78](start_span)[span_78](end_span)
+          <SiteThemeBridge />[span_79](start_span)[span_79](end_span)
+          <Router />[span_80](start_span)[span_80](end_span)
+        </TooltipProvider>[span_81](start_span)[span_81](end_span)
+      </ThemeProvider>[span_82](start_span)[span_82](end_span)
+    </ErrorBoundary>[span_83](start_span)[span_83](end_span)
+  );[span_84](start_span)[span_84](end_span)
+}[span_85](start_span)[span_85](end_span)
 
-        ul {
-            padding-left: 1.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 1.5rem;
-            color: var(--primary-dark);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 3rem;
-        }
-
-        @media (max-width: 600px) {
-            .card {
-                padding: 1.25rem;
-            }
-            header h1 {
-                font-size: 1.6rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Island Handyman</h1>
-        <p>Professional Home Repair & Improvement Services</p>
-    </header>
-
-    <div class="container">
-        <a href="https://islandhandyman.vip/terms
-        " class="back-link">&larr; Return to Homepage</a>
-
-        <div class="card">
-            <h2>Terms of Service</h2>
-            <p>Welcome to Island Handyman. By booking our services, requesting an estimate, or using our website, you agree to comply with and be bound by the following terms and conditions. Please review them carefully.</p>
-
-            <h2>1. Estimates and Pricing</h2>
-            <p>All estimates provided are based on a visual inspection and the information available at the time of the assessment. Estimates are valid for 30 days from the date issued. If hidden damage, structural issues, or unforeseen complications arise once work begins, the scope of work and pricing may need to be adjusted. We will always communicate any changes and secure your approval before proceeding.</p>
-
-            <h2>2. Payment</h2>
-            <p>Payment terms are established per project. For standard jobs, payment is due upon satisfactory completion of the work. For larger projects, a deposit may be required upfront for materials and scheduling. We accept payment via approved methods outlined on your invoice. Late payments may be subject to applicable interest charges.</p>
-
-            <h2>3. Materials and Supplies</h2>
-            <p>Unless otherwise agreed in writing, clients are responsible for the cost of all materials and supplies required for the project. If Island Handyman purchases materials on your behalf, receipts will be provided, and a procurement or pickup fee may apply. Clients are responsible for ensuring selected materials are suitable for their intended application.</p>
-
-            <h2>4. Scheduling and Availability</h2>
-            <p>We strive to adhere strictly to scheduled dates and arrival windows. However, project timelines can occasionally be impacted by weather, material availability, or delays on preceding jobs. We will notify you promptly if any schedule adjustments become necessary.</p>
-
-            <h2>5. Access and Work Areas</h2>
-            <p>Clients must provide safe, unobstructed access to the work area, including necessary electricity, water, and parking. Clients are responsible for removing fragile items, electronics, and valuable belongings from the immediate work zone prior to our arrival.</p>
-
-            <h2>6. Unexpected Conditions</h2>
-            <p>Older homes or properties may conceal unexpected conditions such as mold, asbestos, outdated wiring, rotten framing, or active plumbing leaks. Island Handyman is not responsible for pre-existing conditions or latent defects discovered during the course of work. Remediation of such conditions will require a separate agreement and authorization.</p>
-
-            <h2>7. Workmanship</h2>
-            <p>我们 take pride in our craft and stand behind the quality of our labor. If you notice any defect directly related to our workmanship, you must notify us within a reasonable timeframe (typically 30 days) following project completion so we can evaluate and address it.</p>
-
-            <h2>8. Property and Safety</h2>
-            <p>We maintain a strong commitment to job-site safety. Clients, children, and pets must keep clear of active work zones containing tools, materials, and machinery to prevent injury. Island Handyman carries standard liability insurance for your peace of mind.</p>
-
-            <h2>9. Privacy</h2>
-            <p>We respect your privacy. Any personal information, contact details, or project specifics collected through our booking system or communications are used strictly for service delivery, customer support, and business operations. We do not sell or share your data with unauthorized third parties.</p>
-
-            <h2>10. Questions and Ontario Law</h2>
-            <p>These terms and conditions are governed by and construed in accordance with the laws of the Province of Ontario and the federal laws of Canada applicable therein. If you have any questions regarding these terms, please contact us directly.</p>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 Island Handyman. All rights reserved.
-    </footer>
-
-</body>
-</html>
+export default App;[span_86](start_span)[span_86](end_span)
