@@ -115,7 +115,7 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Brand Logo -->
             <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-brand-lime flex items-center justify-center font-bold text-brand-bg text-xl shadow-lg shadow-brand-lime/10 group-hover:bg-brand-limeHover transition-all">
+                <div class="w-10 h-10 rounded-xl bg-brand-lime flex items-center justify-center font-bold text-brand-bg text-xl shadow-lg shadow-brand-lime/10 group-hover:bg-brand-limeHover transition-colors">
                     H
                 </div>
                 <div>
@@ -140,7 +140,7 @@
                 
                 <!-- Hero Left Column -->
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-tagBg text-brand-textMuted text-xs font-semibold tracking-wider uppercase border border-brand-border">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-tagBg text-brand-textMuted text-xs font-semibold tracking-wider uppercase border border-brand-border/70">
                         <span class="w-2 h-2 rounded-full bg-brand-lime"></span>
                         Repairs • Maintenance • Improvements
                     </div>
@@ -162,7 +162,7 @@
                     </div>
 
                     <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                        <a href="#services" class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-brand-card hover:bg-brand-border text-brand-textMain font-medium text-base transition-colors border border-brand-border/60">
+                        <a href="#services" class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-brand-card hover:bg-brand-border text-brand-textMain font-medium text-base transition-colors">
                             Explore services
                         </a>
                     </div>
@@ -180,8 +180,8 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-brand-bg/80 via-transparent to-transparent"></div>
                             
                             <!-- Location Badge overlay -->
-                            <div class="absolute top-3 left-3 bg-brand-bg/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-brand-border/80 text-xs font-medium text-brand-textMain flex items-center gap-1.5 shadow-sm">
-                                <svg class="w-3.5 h-3.5 text-brand-lime" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+                            <div class="absolute top-3 left-3 bg-brand-bg/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-brand-border/80 text-xs font-medium text-brand-textMain flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-brand-lime" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 0 1 0-9.9zM10 11.5A1.5 1.5 0 1 0 10 8a1.5 1.5 0 0 0 0 3.5z" clip-rule="evenodd"/></svg>
                                 Ward's & Algonquin Island (Aerial View)
                             </div>
                         </div>
@@ -209,14 +209,11 @@
                     </p>
                 </div>
 
-                <!-- 4 Grid Services -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    
-                    <!-- Card 1: Home Repairs -->
                     <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-all">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
                             </div>
                             <h3 class="text-xl font-semibold text-brand-textMain mb-3">Home repairs</h3>
                             <p class="text-sm text-brand-textMuted leading-relaxed">
@@ -225,11 +222,10 @@
                         </div>
                     </div>
 
-                    <!-- Card 2: Mounting & Assembly -->
                     <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-all">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.232 5.232a3 3 0 114.243 4.243L9.5 19.5l-5 1 1-5L15.232 5.232z"/></svg>
                             </div>
                             <h3 class="text-xl font-semibold text-brand-textMain mb-3">Mounting & assembly</h3>
                             <p class="text-sm text-brand-textMuted leading-relaxed">
@@ -238,11 +234,10 @@
                         </div>
                     </div>
 
-                    <!-- Card 3: Outdoor Work -->
                     <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-all">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 3v4M3 5h4M6 17v4m-2-2h4M14 3v4m-2-2h4M14 17v4m-2-2h4M6 9h12M6 15h12"/></svg>
                             </div>
                             <h3 class="text-xl font-semibold text-brand-textMain mb-3">Outdoor work</h3>
                             <p class="text-sm text-brand-textMuted leading-relaxed">
@@ -251,11 +246,10 @@
                         </div>
                     </div>
 
-                    <!-- Card 4: Improvements -->
                     <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-all">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6v6l4 2m4-2a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
                             </div>
                             <h3 class="text-xl font-semibold text-brand-textMain mb-3">Improvements</h3>
                             <p class="text-sm text-brand-textMuted leading-relaxed">
@@ -266,10 +260,9 @@
 
                 </div>
 
-                <!-- Scope/Licensed Professional Note Box -->
                 <div class="mt-8 bg-brand-card/60 p-4 sm:p-5 rounded-xl border border-brand-border flex items-start sm:items-center gap-4 text-xs sm:text-sm text-brand-textMuted">
                     <div class="p-2 rounded-lg bg-brand-tagBg text-brand-lime shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <p>
                         <strong class="text-brand-textMain font-medium">Scope note:</strong> For electrical, plumbing, heating and other specialist work, I review the scope carefully. Some jobs may require a licensed professional or specialized trade authorization.
@@ -287,8 +280,8 @@
                     <h2 id="about-heading" class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-4 serif-heading">Practical help, rooted on the Islands.</h2>
                 </div>
                 <div class="lg:col-span-7 bg-brand-card p-6 sm:p-8 rounded-2xl border border-brand-border">
-                    <p class="text-brand-textMuted text-base leading-relaxed mb-4">Independent local service for Toronto Island residents across Algonquin and Ward's Island. Each job starts with a direct assessment of the home's needs.</p>
-                    <p class="text-brand-textMuted text-base leading-relaxed">Before work begins, logistics, timing, and scope are discussed up front. The aim is dependable work carried out cleanly and with respect for community standards.</p>
+                    <p class="text-brand-textMuted text-base leading-relaxed mb-4">Independent local service for Toronto Island residents across Algonquin and Ward's Island. Each job starts with a direct assessment and a practical understanding of the work to be done.</p>
+                    <p class="text-brand-textMuted text-base leading-relaxed">Before work begins, logistics, timing, and scope are discussed up front. The aim is dependable work carried out cleanly and with respect for the home, the property, and the island community.</p>
                 </div>
             </div>
         </section>
@@ -312,7 +305,7 @@
                     </details>
                     <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
                         <summary class="text-brand-textMain font-semibold cursor-pointer">Do you take on specialist electrical, plumbing, or heating work?</summary>
-                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">The scope is reviewed carefully. Some jobs may require a licensed professional or specialized trade authorization.</p>
+                        <p class="text-brand-textMuted text-sm leading-relaxed mt-3">The scope is reviewed carefully. Some jobs may require a licensed professional or specialized trade authorization depending on the work involved.</p>
                     </details>
                     <details class="bg-brand-card p-5 rounded-xl border border-brand-border">
                         <summary class="text-brand-textMain font-semibold cursor-pointer">What happens before work begins?</summary>
@@ -337,9 +330,7 @@
                         </p>
                     </div>
 
-                    <!-- Steps Grid -->
                     <div class="lg:col-span-7 space-y-4">
-                        
                         <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex items-start gap-5">
                             <span class="text-2xl font-bold text-brand-lime font-mono bg-brand-tagBg w-12 h-12 rounded-xl flex items-center justify-center border border-brand-border shrink-0">01</span>
                             <div>
@@ -369,7 +360,6 @@
                                 </p>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -394,6 +384,7 @@
                     <a href="#services" class="hover:text-brand-lime transition-colors">Services</a>
                     <a href="#how-it-works" class="hover:text-brand-lime transition-colors">How it works</a>
                     <a href="#common-questions" class="hover:text-brand-lime transition-colors">Questions</a>
+                    <a href="./terms.html" class="hover:text-brand-lime transition-colors">Terms of Service</a>
                 </div>
 
             </div>
@@ -401,7 +392,6 @@
             <div class="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
                 <p>© 2026 Island Handyman. Independent local service for Toronto Island homes.</p>
                 
-                <!-- Explicit full site coming soon banner badge -->
                 <div class="px-3 py-1.5 rounded-full bg-brand-tagBg border border-brand-border text-brand-lime font-medium flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-brand-lime animate-pulse"></span>
                     Full site coming soon • Independent local service for Toronto Island homes
