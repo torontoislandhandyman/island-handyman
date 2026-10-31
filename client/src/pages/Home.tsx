@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useMemo, useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { DEFAULT_SITE_CONTENT } from "@shared/siteContent";
+import TermsOfService from "@/components/TermsOfService";
 
 const serviceIcons = [House, Ruler, Leaf, Sparkles];
 
@@ -81,7 +82,7 @@ function PublicCalendar({ calendar }: { calendar: PublicCalendarSlot[] }) {
           </div>
 
           <div className="ih-calendar-weekdays" aria-hidden="true">
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
               <span key={day}>{day}</span>
             ))}
           </div>
@@ -359,6 +360,8 @@ export default function Home() {
           </nav>
         </div>
       </footer>
+
+      <TermsOfService />
     </div>
   );
 }
