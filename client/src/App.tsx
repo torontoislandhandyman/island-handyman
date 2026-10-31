@@ -83,11 +83,12 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
-        <TooltipProvider>
-          <Toaster />
-          <SiteThemeBridge />
-          <Router />
-        </TooltipProvider>
+       <TooltipProvider>
+  <Toaster />
+  <SiteThemeBridge />
+  <Router />
+  <TermsOfService />
+</TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
