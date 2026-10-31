@@ -1,162 +1,141 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#172c22">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terms of Service | Island Handyman</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#0c1a14',
+              card: '#14291f',
+              border: '#1f3a2d',
+              lime: '#b8e635',
+              textMain: '#e5eee8',
+              textMuted: '#8ba695'
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    * { box-sizing: border-box; }
-
     body {
-      margin: 0;
-      padding: 30px 18px;
-      background: #172c22;
-      color: #f3eddf;
-      font-family: Arial, sans-serif;
-      line-height: 1.75;
+      background-color: #0c1a14;
+      color: #e5eee8;
+      font-family: 'Segoe UI', sans-serif;
     }
-
-    main {
-      max-width: 800px;
-      margin: 35px auto;
-      padding: 35px;
-      background: #203b2c;
-      border: 1px solid #496b52;
-      border-radius: 12px;
+    .terms-shell {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
     }
-
-    h1, h2 { color: #c6d99a; }
-
-    h1 {
-      font-size: 32px;
-      margin-bottom: 8px;
+    .terms-box {
+      background: #14291f;
+      border: 1px solid #1f3a2d;
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
-
-    h2 {
-      margin-top: 30px;
-      font-size: 19px;
+    h1, h2, h3 {
+      color: #e5eee8;
     }
-
-    p { color: #e2e5d9; }
-
-    .updated {
-      color: #c6d99a;
-      font-size: 14px;
+    p {
+      color: #dfeae4;
+      line-height: 1.8;
+      margin: 12px 0;
     }
-
-    a {
-      color: #c6d99a;
+    strong {
+      color: #f6f1e8;
     }
-
-    .back {
+    .back-link {
       display: inline-block;
-      margin-top: 30px;
-      padding: 12px 20px;
-      background: #c6d99a;
-      color: #172c22;
-      border-radius: 6px;
-      font-weight: bold;
+      margin-bottom: 20px;
+      color: #b8e635;
       text-decoration: none;
-    }
-
-    @media (max-width: 600px) {
-      main { padding: 24px 20px; }
-      h1 { font-size: 27px; }
+      font-weight: 600;
     }
   </style>
 </head>
-
 <body>
-  <main>
-    <h1>Terms of Service</h1>
-    <p class="updated">Island Handyman Services · October 31, 2026</p>
+  <div class="terms-shell">
+    <a class="back-link" href="./index.html">← Back to Home</a>
 
-    <p>
-      Thanks for choosing Island Handyman. These terms explain how I
-      approach estimates, scheduling, payments and the work I provide.
-      My goal is to keep everything straightforward and clear.
-    </p>
+    <div class="terms-box">
+      <h1>Island Handyman</h1>
+      <p><strong>Simple Terms of Service</strong></p>
+      <p>Effective Date: October 31, 2026</p>
 
-    <h2>1. Estimates and Pricing</h2>
-    <p>
-      Estimates are based on the information available when we discuss
-      the job. If the work turns out to be different from what was
-      expected, I will discuss any changes in the work or price with
-      you before proceeding.
-    </p>
+      <p>
+        Welcome to Island Handyman. My goal is to provide reliable, practical, and honest handyman services to clients on Toronto Island. By requesting or accepting services, you agree to the following terms.
+      </p>
 
-    <h2>2. Payment</h2>
-    <p>
-      Payment arrangements will be agreed upon before work begins.
-      Unless otherwise arranged, payment is due when the agreed work
-      is completed. Additional expenses will be discussed with you.
-    </p>
+      <h2>1. Services and Estimates</h2>
+      <p>
+        Work and pricing will be discussed before work begins. Estimates are based on available information. If unexpected problems or additional work arise, I will discuss changes in scope or cost before proceeding whenever reasonably possible.
+      </p>
 
-    <h2>3. Materials and Supplies</h2>
-    <p>
-      Materials may be supplied by Island Handyman or provided by the
-      client, depending on the job. Significant changes in material
-      requirements or costs will be discussed beforehand.
-    </p>
+      <h2>2. Pricing and Payment</h2>
+      <p>
+        Payment arrangements will be agreed upon in advance. Unless otherwise agreed, payment is due when the agreed work is completed. Additional work, materials, or expenses outside the original agreement may incur extra charges.
+      </p>
 
-    <h2>4. Scheduling and Availability</h2>
-    <p>
-      Work dates and arrival times are arranged in advance. Weather,
-      transportation, supply delays or unexpected circumstances may
-      occasionally require changes. If that happens, I will keep you
-      informed.
-    </p>
+      <h2>3. Materials and Expenses</h2>
+      <p>
+        Materials, supplies, and applicable travel or delivery charges will be discussed in advance and either included in the agreed price or charged separately.
+      </p>
 
-    <h2>5. Access and Work Areas</h2>
-    <p>
-      Clients are responsible for arranging reasonable access to the
-      work area and letting me know about known issues that could
-      affect the job.
-    </p>
+      <h2>4. Scheduling and Cancellations</h2>
+      <p>
+        Appointments are arranged by mutual agreement. Weather, transportation, emergencies, or material delays may require rescheduling. I will make reasonable efforts to notify you of changes as soon as possible.
+      </p>
 
-    <h2>6. Unexpected Conditions</h2>
-    <p>
-      Some problems only become visible once work has started. If
-      hidden damage, unsafe conditions or additional work is
-      discovered, I will explain the situation and discuss the next
-      steps before carrying out additional work.
-    </p>
+      <h2>5. Access and Work Areas</h2>
+      <p>
+        Clients agree to provide reasonable access to the work area and disclose any known hazards, existing damage, or special concerns before work begins.
+      </p>
 
-    <h2>7. Workmanship</h2>
-    <p>
-      Work is carried out with reasonable care and attention. If you
-      have a concern about completed work, please contact me so we
-      can discuss it and determine an appropriate solution.
-    </p>
+      <h2>6. Unexpected Problems</h2>
+      <p>
+        Repairs may reveal hidden damage or problems that could not reasonably be identified beforehand. If this happens, I will explain the situation and discuss options and additional costs before proceeding with further work.
+      </p>
 
-    <h2>8. Property and Safety</h2>
-    <p>
-      Reasonable care will be taken around your home and property.
-      Clients should keep people clear of active work areas and let
-      me know about relevant hazards or property concerns.
-    </p>
+      <h2>7. Workmanship and Limitations</h2>
+      <p>
+        I will make reasonable efforts to complete agreed work carefully and professionally. If you have concerns about completed work, please contact me promptly so we can discuss an appropriate solution.
+      </p>
+      <p>
+        Specialized or licensed work will only be undertaken when legally permitted and specifically agreed upon. Work may also be affected by existing conditions, third-party products, or circumstances outside my reasonable control.
+      </p>
 
-    <h2>9. Privacy</h2>
-    <p>
-      Information shared with Island Handyman is used to communicate
-      with clients, arrange work, maintain job records and provide
-      services. Client information is not sold.
-    </p>
+      <h2>8. Property and Safety</h2>
+      <p>
+        I will take reasonable care to protect your property and maintain a safe work area. Any relevant access restrictions or safety concerns should be communicated before work begins.
+      </p>
 
-    <h2>10. Questions</h2>
-    <p>
-      If anything about these terms or an agreed job is unclear,
-      please get in touch. I am always happy to discuss things
-      directly.
-    </p>
+      <h2>9. Client Information and Privacy</h2>
+      <p>
+        Client contact details, project information, photographs, and messages will be used as reasonably necessary to arrange, perform, and manage the requested work. Private client information will not be publicly shared without permission, except where legally required.
+      </p>
 
-    <p>
-      These terms are governed by the laws of Ontario, Canada.
-    </p>
+      <h2>10. Questions or Concerns</h2>
+      <p>
+        If you have questions about these terms, an estimate, an invoice, or completed work, please contact me directly. I believe clear communication and fair solutions are the best way to resolve concerns.
+      </p>
 
-    <a class="back" href="/">Return to Island Handyman</a>
-  </main>
+      <h2>11. Applicable Law</h2>
+      <p>
+        These terms are governed by the laws of Ontario and the applicable laws of Canada. Nothing in these terms removes any rights clients have under applicable law.
+      </p>
+
+      <p style="margin-top: 24px; color: #d6c69b;">
+        Thank you for choosing Island Handyman. I appreciate your business and the opportunity to help.
+      </p>
+    </div>
+  </div>
 </body>
 </html>
