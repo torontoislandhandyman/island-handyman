@@ -1,214 +1,141 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Island Handyman | Independent Local Service • Toronto Island</title>
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="8bf1cf74-e28f-43f5-8604-55cbd60d90da"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            bg: '#0c1a14',
-                            card: '#14291f',
-                            border: '#1f3a2d',
-                            lime: '#b8e635',
-                            limeHover: '#a3d126',
-                            textMain: '#e5eee8',
-                            textMuted: '#8ba695',
-                            tagBg: '#1b382b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        serif: ['"Playfair Display"', 'serif'],
-                    }
-                }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service | Island Handyman</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#0c1a14',
+              card: '#14291f',
+              border: '#1f3a2d',
+              lime: '#b8e635',
+              textMain: '#e5eee8',
+              textMuted: '#8ba695'
             }
+          }
         }
-    </script>
-    <style>
-        body {
-            background-color: #0c1a14;
-            color: #e5eee8;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .serif-heading {
-            font-family: 'Playfair Display', serif;
-        }
-        .live-status-badge {
-            --live-status-color: #9baea1;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 100%;
-            min-height: 40px;
-            padding: 9px 14px;
-            border: 1px solid rgba(184, 230, 53, 0.26);
-            border-radius: 9999px;
-            background: rgba(20, 41, 31, 0.9);
-            color: #e5eee8;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-            font-size: 0.875rem;
-            font-weight: 600;
-            line-height: 1.35;
-        }
-        .live-status-badge[data-status="available"] { --live-status-color: #4bd486; border-color: rgba(75, 212, 134, 0.35); }
-        .live-status-badge[data-status="busy"] { --live-status-color: #f3c453; border-color: rgba(243, 196, 83, 0.38); }
-        .live-status-badge[data-status="offline"] { --live-status-color: #f1766d; border-color: rgba(241, 118, 109, 0.38); }
-        .live-status-message {
-            max-width: 36rem;
-            margin: 0;
-            color: #aebeb4;
-            font-size: 0.78rem;
-            line-height: 1.5;
-        }
-        .live-status-message[hidden] { display: none; }
-        .live-status-dot {
-            position: relative;
-            flex: 0 0 10px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--live-status-color);
-            color: var(--live-status-color);
-            box-shadow: 0 0 12px color-mix(in srgb, var(--live-status-color) 42%, transparent);
-        }
-        .live-status-dot::after {
-            position: absolute;
-            inset: -4px;
-            border: 1px solid currentColor;
-            border-radius: inherit;
-            content: "";
-            animation: live-status-pulse 1.8s ease-out infinite;
-        }
-        @keyframes live-status-pulse {
-            0% { opacity: 0.75; transform: scale(0.65); }
-            100% { opacity: 0; transform: scale(1.8); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .live-status-dot::after { animation: none; }
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0c1a14;
+      color: #e5eee8;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .terms-shell {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+    .terms-box {
+      background: #14291f;
+      border: 1px solid #1f3a2d;
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    h1, h2, h3 {
+      color: #e5eee8;
+    }
+    p {
+      color: #dfeae4;
+      line-height: 1.8;
+      margin: 12px 0;
+    }
+    strong {
+      color: #f6f1e8;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #b8e635;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-lime selection:text-brand-bg">
-    <div class="bg-brand-card/80 border-b border-brand-border py-2 text-xs text-brand-textMuted text-center tracking-wide">
-        <span>Independent local service</span>
-        <span class="mx-2">•</span>
-        <span class="text-brand-textMain font-medium">Toronto Island</span>
+<body>
+  <div class="terms-shell">
+    <a class="back-link" href="./index.html">← Back to Home</a>
+
+    <div class="terms-box">
+      <h1>Island Handyman</h1>
+      <p><strong>Simple Terms of Service</strong></p>
+      <p>Effective Date: October 31, 2026</p>
+
+      <p>
+        Welcome to Island Handyman. My goal is to provide reliable, practical, and honest handyman services to clients on Toronto Island. By requesting or accepting services, you agree to the following terms.
+      </p>
+
+      <h2>1. Services and Estimates</h2>
+      <p>
+        Work and pricing will be discussed before work begins. Estimates are based on available information. If unexpected problems or additional work arise, I will discuss changes in scope or cost before proceeding whenever reasonably possible.
+      </p>
+
+      <h2>2. Pricing and Payment</h2>
+      <p>
+        Payment arrangements will be agreed upon in advance. Unless otherwise agreed, payment is due when the agreed work is completed. Additional work, materials, or expenses outside the original agreement may incur extra charges.
+      </p>
+
+      <h2>3. Materials and Expenses</h2>
+      <p>
+        Materials, supplies, and applicable travel or delivery charges will be discussed in advance and either included in the agreed price or charged separately.
+      </p>
+
+      <h2>4. Scheduling and Cancellations</h2>
+      <p>
+        Appointments are arranged by mutual agreement. Weather, transportation, emergencies, or material delays may require rescheduling. I will make reasonable efforts to notify you of changes as soon as possible.
+      </p>
+
+      <h2>5. Access and Work Areas</h2>
+      <p>
+        Clients agree to provide reasonable access to the work area and disclose any known hazards, existing damage, or special concerns before work begins.
+      </p>
+
+      <h2>6. Unexpected Problems</h2>
+      <p>
+        Repairs may reveal hidden damage or problems that could not reasonably be identified beforehand. If this happens, I will explain the situation and discuss options and additional costs before proceeding with further work.
+      </p>
+
+      <h2>7. Workmanship and Limitations</h2>
+      <p>
+        I will make reasonable efforts to complete agreed work carefully and professionally. If you have concerns about completed work, please contact me promptly so we can discuss an appropriate solution.
+      </p>
+      <p>
+        Specialized or licensed work will only be undertaken when legally permitted and specifically agreed upon. Work may also be affected by existing conditions, third-party products, or circumstances outside my reasonable control.
+      </p>
+
+      <h2>8. Property and Safety</h2>
+      <p>
+        I will take reasonable care to protect your property and maintain a safe work area. Any relevant access restrictions or safety concerns should be communicated before work begins.
+      </p>
+
+      <h2>9. Client Information and Privacy</h2>
+      <p>
+        Client contact details, project information, photographs, and messages will be used as reasonably necessary to arrange, perform, and manage the requested work. Private client information will not be publicly shared without permission, except where legally required.
+      </p>
+
+      <h2>10. Questions or Concerns</h2>
+      <p>
+        If you have questions about these terms, an estimate, an invoice, or completed work, please contact me directly. I believe clear communication and fair solutions are the best way to resolve concerns.
+      </p>
+
+      <h2>11. Applicable Law</h2>
+      <p>
+        These terms are governed by the laws of Ontario and the applicable laws of Canada. Nothing in these terms removes any rights clients have under applicable law.
+      </p>
+
+      <p style="margin-top: 24px; color: #d6c69b;">
+        Thank you for choosing Island Handyman. I appreciate your business and the opportunity to help.
+      </p>
     </div>
-
-    <header class="sticky top-0 z-40 bg-brand-bg/90 backdrop-blur-md border-b border-brand-border/60">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-brand-lime flex items-center justify-center font-bold text-brand-bg text-xl shadow-lg shadow-brand-lime/10 group-hover:bg-brand-limeHover transition-colors">
-                    H
-                </div>
-                <div>
-                    <span class="block text-base font-bold tracking-wider text-brand-textMain uppercase">Island Handyman</span>
-                    <span class="block text-xs text-brand-textMuted font-light">Toronto Island, ON</span>
-                </div>
-            </a>
-
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-brand-textMuted">
-                <a href="#services" class="hover:text-brand-lime transition-colors">Services</a>
-                <a href="#how-it-works" class="hover:text-brand-lime transition-colors">How it works</a>
-                <a href="#about" class="hover:text-brand-lime transition-colors">About</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="flex-grow">
-        <section class="py-12 lg:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-tagBg text-brand-textMuted text-xs font-semibold tracking-wider uppercase border border-brand-border/70">
-                        <span class="w-2 h-2 rounded-full bg-brand-lime"></span>
-                        Repairs • Maintenance • Improvements
-                    </div>
-
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-normal text-brand-textMain leading-[1.15] serif-heading">
-                        Good work, <br class="hidden sm:inline"/>close to <span class="text-brand-lime font-light italic">home.</span>
-                    </h1>
-
-                    <p class="text-lg text-brand-textMuted font-normal max-w-xl leading-relaxed">
-                        Practical help for repairs, upkeep and small improvements around Toronto Island. Tell me what's happening, and I'll make the next step clear.
-                    </p>
-
-                    <div class="flex flex-col items-start gap-2">
-                        <div id="live-status-badge" class="live-status-badge" data-status="loading" role="status" aria-live="polite" aria-atomic="true" aria-busy="true" aria-label="Current island status">
-                            <span class="live-status-dot" aria-hidden="true"></span>
-                            <span id="live-status-label">Checking island status…</span>
-                        </div>
-                        <p id="live-status-message" class="live-status-message" aria-live="polite" aria-atomic="true" hidden></p>
-                    </div>
-
-                    <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                        <a href="#services" class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-brand-card hover:bg-brand-border text-brand-textMain font-medium text-base transition-colors">
-                            Explore services
-                        </a>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-5">
-                    <div class="bg-brand-card p-3 rounded-2xl border border-brand-border shadow-2xl relative overflow-hidden group">
-                        <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-brand-bg">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Toronto_Islands_2025-05-08.jpg"
-                                 alt="Aerial bird's eye view of Ward's and Algonquin Island, Toronto Islands"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
-                                 onerror="this.src='https://placehold.co/800x600/14291f/b8e635?text=Toronto+Island+Aerial+View'"/>
-                            <div class="absolute inset-0 bg-gradient-to-t from-brand-bg/80 via-transparent to-transparent"></div>
-
-                            <div class="absolute top-3 left-3 bg-brand-bg/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-brand-border/80 text-xs font-medium text-brand-textMain flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-brand-lime" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 0 1 0-9.9zM10 11.5A1.5 1.5 0 1 0 10 8a1.5 1.5 0 0 0 0 3.5z" clip-rule="evenodd"/></svg>
-                                Ward's & Algonquin Island (Aerial View)
-                            </div>
-                        </div>
-                        <div class="px-3 pt-3 pb-1 flex justify-between items-center text-xs text-brand-textMuted">
-                            <span>Community neighborhood service</span>
-                            <span class="text-brand-lime font-medium">Island Resident</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="services" class="py-16 bg-brand-bg border-t border-brand-border/40">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-12 max-w-2xl">
-                    <span class="text-xs font-bold uppercase tracking-widest text-brand-lime">What I Can Help With</span>
-                    <h2 class="text-3xl sm:text-4xl font-normal text-brand-textMain mt-2 mb-3 serif-heading">
-                        Useful work. Done properly.
-                    </h2>
-                    <p class="text-brand-textMuted text-base">
-                        A straightforward service for the jobs that keep a home working well.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
-                        <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
-                            </div>
-                            <h3 class="text-xl font-semibold text-brand-textMain mb-3">Home repairs</h3>
-                            <p class="text-sm text-brand-textMuted leading-relaxed">
-                                Doors, windows, drywall, painting, caulking, tile, wood flooring, light fixtures, leaky faucets, toilets, switches, and fans.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between hover:border-brand-lime/40 transition-all group">
-                        <div>
-                            <div class="w-12 h-12 rounded-xl bg-brand-tagBg border border-brand-border flex items-center justify-center text-brand-lime mb-5 group-hover:bg-brand-lime group-hover:text-brand-bg transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.232 5.232a3 3 0 114.243 4.243L9.5 19.5l-5 1 1-5L15.232 5.232z"/></svg>
-                            </div>
-                            <h3 class="text-xl font-semibold text-brand-textMain mb-3">Mounting & assembly</h3>
-                            <p class="text-sm text-brand-textMuted leading-relaxed">
-                                Picture hanging, shelves, TVs, speakers, appliance installation
+  </div>
+</body>
+</html>
