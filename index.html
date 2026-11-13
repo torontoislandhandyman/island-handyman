@@ -3,9 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#12343b" />
     <title>Island Handyman</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        background: #12343b;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100vh;
+        height: 100svh;
+        object-fit: contain;
+      }
+    </style>
   </head>
   <body>
-    <img src="/IMG_0418.jpeg" alt="Aerial bird's eye view of Ward's and Algonquin Island, Toronto Islands" />
+    <img
+      src="/IMG_0455.JPG"
+      alt="Aerial view of homes and waterways on the Toronto Islands"
+      fetchpriority="high"
+      decoding="sync"
+    />
   </body>
 </html>
