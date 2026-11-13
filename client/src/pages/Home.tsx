@@ -216,7 +216,7 @@ export default function Home() {
           <figure className="ih-hero-photo-frame">
             <img
               className="ih-hero-photo"
-              src="/toronto-islands-aerial.webp"
+              src="/IMG_0418.jpeg"
               alt="An aerial view of the Toronto Islands, Lake Ontario and the Toronto waterfront."
               width="1800"
               height="1800"
@@ -349,7 +349,7 @@ export default function Home() {
               {!contactPhone && !contactEmail && <span>Need to reach me? Use the job request form.</span>}
             </div>
             <p className="ih-privacy-copy">
-              Privacy: contact details, messages, photos and project documents are used only to review and manage your work. Public testimonials or photos are shared only with customer and owner permission.
+              Privacy: contact details, messages, photos and project documents are used only to review and manage your work. Public testimonials or photos are shared only with customer and owner approval.
             </p>
           </div>
           <nav className="ih-footer-links" aria-label="Footer navigation">
