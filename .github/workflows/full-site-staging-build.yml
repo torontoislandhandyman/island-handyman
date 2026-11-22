@@ -1,0 +1,52 @@
+name: Full-site staging build (no deployment)
+
+on:
+  push:
+    branches:
+      - staging/full-site
+    paths:
+      - "full-site/**"
+      - ".github/workflows/full-site-staging-build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Type-check and build full-site/
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: full-site/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: full-site
+
+      - name: Type-check
+        run: pnpm check
+        working-directory: full-site
+
+      - name: Build full application
+        run: pnpm build
+        working-directory: full-site
+
+      - name: Save build artifact (no deployment)
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-site-staging-build
+          path: full-site/dist/
+          if-no-files-found: error
+          retention-days: 7
